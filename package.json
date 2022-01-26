@@ -49,16 +49,31 @@
   "cds": {
     "requires": {
       "auth": {
-        "strategy": "JWT"
+        "kind": "basic-auth",
+        "users": {
+          "admin": {
+            "roles": [
+              "$XSAPPNAME.mtcallback",
+              "$XSAPPNAME.mtdeployment",
+              "$XSAPPNAME.MtxDiagnose"
+            ],
+            "tenant": "anonymous"
+          }
+        }
+      },
+      "[production]": {
+        "auth": {
+          "kind": "jwt-auth"
+        },
+        "uaa": {
+          "kind": "xsuaa"
+        }
       },
       "db": {
         "kind": "hana",
         "vcap": {
           "label": "service-manager"
         }
-      },
-      "uaa": {
-        "kind": "xsuaa"
       },
       "multitenancy": true
     },
@@ -71,11 +86,6 @@
         "com.sap.",
         "sap."
       ]
-    },
-    "auth": {
-      "passport": {
-        "strategy": "JWT"
-      }
     }
   }
 }

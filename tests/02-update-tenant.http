@@ -1,0 +1,28 @@
+### Update Model of one Tenant
+# @name asyncUpgrade
+POST {{$dotenv localhost}}/mtx/v1/model/asyncUpgrade
+Authorization: Basic admin:
+Content-Type: application/json
+
+{
+    "tenants": ["{{$dotenv tenant_id}}"],
+    "autoUndeploy": true
+}
+
+###
+@jobId={{asyncUpgrade.response.body.jobID}}
+### 
+GET {{$dotenv localhost}}/mtx/v1/model/status/{{jobId}}
+Authorization: Basic admin:
+Content-Type: application/json
+
+### Update all Tenants
+POST {{$dotenv localhost}}/mtx/v1/model/asyncUpgrade
+Authorization: Basic admin:
+#Authorization: Bearer {{accToken}}
+Content-Type: application/json
+
+{
+    "tenants": ["all"],
+    "autoUndeploy": false
+}

@@ -1,0 +1,14 @@
+###
+GET {{$dotenv localhost}}/catalog/Beers
+    ?$count=true
+    &$filter=(IsActiveEntity%20eq%20false%20or%20SiblingEntity/IsActiveEntity%20eq%20null)
+Authorization: Basic admin:
+### Will create new object but as draft
+POST {{$dotenv localhost}}/catalog/Beers
+Authorization: Basic admin:
+Content-Type: application/json
+
+{
+    "title": "Augustiner",
+    "stock": 20
+}

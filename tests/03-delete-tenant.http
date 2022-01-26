@@ -1,0 +1,3 @@
+###
+DELETE {{$dotenv localhost}}/mtx/v1/provisioning/tenant/{{$dotenv tenant_id}}
+Authorization: Basic admin:

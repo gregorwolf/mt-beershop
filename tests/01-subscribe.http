@@ -1,0 +1,19 @@
+### Read subscribed tenants
+GET {{$dotenv localhost}}/mtx/v1/provisioning/tenant/
+Authorization: Basic admin:
+
+###
+GET {{$dotenv localhost}}/mtx/v1/provisioning/dependencies
+Authorization: Basic admin:
+
+### Create subscription
+PUT {{$dotenv localhost}}/mtx/v1/provisioning/tenant/{{$dotenv tenant_id}}
+Authorization: Basic admin:
+#Authorization: Bearer {{accToken}}
+Content-Type: application/json
+
+{
+    "subscribedSubdomain": "{{$dotenv tenant_id}}",
+    "subscriptionAppName": "so-mt",
+    "eventType": "CREATE"
+}

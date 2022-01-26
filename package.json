@@ -1,0 +1,81 @@
+{
+  "name": "mt-beershop",
+  "version": "1.0.0",
+  "description": "CAP Multitenancy Beershop",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^5",
+    "express": "^4",
+    "@sap/cds-mtx": "^2",
+    "@sap/hana-client": "^2",
+    "@sap/hdi-deploy": "^4",
+    "@sap/instance-manager": "^3",
+    "@sap/xssec": "^3",
+    "passport": "^0"
+  },
+  "devDependencies": {
+    "sqlite3": "^5.0.2"
+  },
+  "scripts": {
+    "start": "cds run"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "es2020": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
+    },
+    "globals": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true,
+      "DELETE": true,
+      "CREATE": true,
+      "DROP": true,
+      "CDL": true,
+      "CQL": true,
+      "CXL": true,
+      "cds": true
+    },
+    "rules": {
+      "no-console": "off",
+      "require-atomic-updates": "off"
+    }
+  },
+  "cds": {
+    "requires": {
+      "auth": {
+        "strategy": "JWT"
+      },
+      "db": {
+        "kind": "hana",
+        "vcap": {
+          "label": "service-manager"
+        }
+      },
+      "uaa": {
+        "kind": "xsuaa"
+      },
+      "multitenancy": true
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
+    },
+    "mtx": {
+      "element-prefix": "Z_",
+      "namespace-blocklist": [
+        "com.sap.",
+        "sap."
+      ]
+    },
+    "auth": {
+      "passport": {
+        "strategy": "JWT"
+      }
+    }
+  }
+}

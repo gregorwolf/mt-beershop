@@ -1,5 +1,9 @@
 # CAP Multitenancy Beershop
 
+## Prerequisites
+
+You have a SAP BTP Cloud Foundry Subaccount with a running SAP HANA Cloud database.
+
 ## Setup
 
 ```

@@ -17,21 +17,21 @@ build-parameters:
       - npx -p @sap/cds-dk cds build --production
 
 modules:
- # --------------------- SERVER MODULE ------------------------
- - name: mt-beershop-srv
- # ------------------------------------------------------------
-   type: nodejs
-   path: gen/srv
-   parameters:
-     buildpack: nodejs_buildpack
-   build-parameters:
-     builder: npm-ci
-   requires:
+  # --------------------- SERVER MODULE ------------------------
+  - name: mt-beershop-srv
+  # ------------------------------------------------------------
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    requires:
     # Resources extracted from CAP configuration
     - name: mt-beershop-db-mt
     - name: mt-beershop-uaa-mt
     - name: mt-beershop-registry
-   provides:
+    provides:
     - name: srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
         srv-url: ${default-url}
@@ -39,53 +39,50 @@ modules:
       properties:
         mtx-url: ${default-url}
 
-
-
 resources:
- # services extracted from CAP configuration
- # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
+# services extracted from CAP configuration
+# 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
 # ------------------------------------------------------------
- - name: mt-beershop-db-mt
-# ------------------------------------------------------------
-   type: org.cloudfoundry.managed-service
-   parameters:
-     service: service-manager
-     service-plan: container
-   properties:
-     hdi-service-name: ${service-name}
-# ------------------------------------------------------------
- - name: mt-beershop-uaa-mt
-# ------------------------------------------------------------
-   type: org.cloudfoundry.managed-service
-   parameters:
-     service: xsuaa
-     service-plan: application  
-     path: ./xs-security.json
-     config:
-       xsappname: mt-beershop-${space}    #  name + space dependency
-       tenant-mode: shared
+  - name: mt-beershop-db-mt
+  # ------------------------------------------------------------
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: service-manager
+      service-plan: container
+    properties:
+      hdi-service-name: ${service-name}
+  # ------------------------------------------------------------
+  - name: mt-beershop-uaa-mt
+  # ------------------------------------------------------------
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application  
+      path: ./xs-security.json
+      config:
+        xsappname: mt-beershop-${space}    #  name + space dependency
+        tenant-mode: shared
 
- - name: mt-beershop-registry
-   type: org.cloudfoundry.managed-service
-   requires:
+  - name: mt-beershop-registry
+    type: org.cloudfoundry.managed-service
+    requires:
       - name: mt-beershop-uaa-mt
       - name: mtx-api
         properties:
-           prop: ~{mtx-url}
+            prop: ~{mtx-url}
         parameters:
-           param: ~{mtx-url}
-   parameters:
+            param: ~{mtx-url}
+    parameters:
       service: saas-registry
       service-plan: application
       config:
-         xsappname: mt-beershop-${space}
-         appName: mt-beershop
-         displayName: mt-beershop
-         description: CAP Multitenancy Beershop
-         #category: 'Category'
-         appUrls:
+          xsappname: mt-beershop-${space}
+          appName: mt-beershop
+          displayName: mt-beershop
+          description: CAP Multitenancy Beershop
+          #category: 'Category'
+          appUrls:
             onSubscription: ~{mtx-api/mtx-url}/mtx/v1/provisioning/tenant/{tenantId}
             onSubscriptionAsync: false
             onUnSubscriptionAsync: false
             callbackTimeoutMillis: 300000
-

@@ -75,7 +75,16 @@
           "label": "service-manager"
         }
       },
-      "multitenancy": true
+      "multitenancy": true,
+      "EPM_REF_APPS_PROD_MAN_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/EPM_REF_APPS_PROD_MAN_SRV",
+        "credentials": {
+          "destination": "S4HANA",
+          "path": "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV",
+          "requestTimeout": 30000
+        }
+      }
     },
     "hana": {
       "deploy-format": "hdbtable"

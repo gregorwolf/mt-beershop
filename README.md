@@ -29,8 +29,7 @@ Create _default-env.json_ with this content and the corresponding credentials fr
         },
         "syslog_drain_url": null
       }
-    ]
-  },
+    ],
     "xsuaa": [
       {
         "label": "xsuaa",
@@ -39,7 +38,15 @@ Create _default-env.json_ with this content and the corresponding credentials fr
         }
       }
     ]
-  }
+  },
+  "destinations": [
+    {
+      "name": "S4HANA",
+      "url": "https://sapes5.sapdevcenter.com",
+      "username": "<Your ES5 Username>",
+      "password": "<Your ES5 Password>"
+    }
+  ]
 }
 ```
 

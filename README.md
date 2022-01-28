@@ -13,8 +13,12 @@ mbt build
 cf deploy mta_archives/mt-beershop_1.0.0.mtar
 cf csk mt-beershop-db-mt dev
 cf csk mt-beershop-uaa-mt dev
+cf csk mt-beershop-registry dev
+cf csk mt-beershop-destination dev
 cf service-key mt-beershop-db-mt dev
 cf service-key mt-beershop-uaa-mt dev
+cf service-key mt-beershop-registry dev
+cf service-key mt-beershop-destination dev
 ```
 
 Create _default-env.json_ with this content and the corresponding credentials from the last two commands:
@@ -25,6 +29,7 @@ Create _default-env.json_ with this content and the corresponding credentials fr
     "service-manager": [
       {
         "label": "service-manager",
+        "name": "mt-beershop-db-mt",
         "credentials": {
         },
         "syslog_drain_url": null
@@ -33,9 +38,32 @@ Create _default-env.json_ with this content and the corresponding credentials fr
     "xsuaa": [
       {
         "label": "xsuaa",
+        "name": "mt-beershop-uaa-mt",
         "tags": ["xsuaa"],
         "credentials": {
         }
+      }
+    ],
+    "saas-registry": [
+      {
+        "label": "saas-registry",
+        "name": "mt-beershop-registry",
+        "tags": [
+          "SaaS"
+        ],
+        "credentials": {}
+      }
+    ],
+    "destination": [
+      {
+        "label": "destination",
+        "name": "mt-beershop-destination",
+        "tags": [
+          "destination",
+          "conn",
+          "connsvc"
+        ],
+        "credentials": {}
       }
     ]
   },

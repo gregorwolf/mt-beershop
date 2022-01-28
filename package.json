@@ -5,6 +5,9 @@
   "repository": "<Add your repository here>",
   "license": "UNLICENSED",
   "private": true,
+  "engines": {
+    "node": "^14"
+  },
   "dependencies": {
     "@sap-cloud-sdk/core": "^1.53.1",
     "@sap/cds": "^5",
@@ -12,7 +15,9 @@
     "@sap/hana-client": "^2",
     "@sap/hdi-deploy": "^4",
     "@sap/instance-manager": "^3",
+    "@sap/xsenv": "^3.2.0",
     "@sap/xssec": "^3",
+    "cfenv": "^1.2.4",
     "express": "^4",
     "passport": "^0"
   },

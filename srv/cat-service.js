@@ -1,5 +1,6 @@
 const cds = require("@sap/cds");
 const { retrieveJwt, verifyJwt } = require("@sap-cloud-sdk/core");
+const { getOrganizations } = require("./cf-api");
 
 module.exports = cds.service.impl(async function () {
   const bupa = await cds.connect.to("EPM_REF_APPS_PROD_MAN_SRV");
@@ -26,5 +27,9 @@ module.exports = cds.service.impl(async function () {
     const users = [user];
     users.$count = 1;
     return users;
+  });
+
+  this.on("getOrganizations", () => {
+    return getOrganizations();
   });
 });

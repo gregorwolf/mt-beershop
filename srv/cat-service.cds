@@ -19,4 +19,6 @@ service CatalogService {
             lastname  : String  @(title : '{i18n>lastname}');
             is_admin  : Boolean @(title : '{i18n>is_admin}');
     };
+
+    function getOrganizations() returns String;
 }

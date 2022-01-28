@@ -6,20 +6,22 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@sap-cloud-sdk/core": "^1.53.1",
     "@sap/cds": "^5",
-    "express": "^4",
     "@sap/cds-mtx": "^2",
     "@sap/hana-client": "^2",
     "@sap/hdi-deploy": "^4",
     "@sap/instance-manager": "^3",
     "@sap/xssec": "^3",
+    "express": "^4",
     "passport": "^0"
   },
   "devDependencies": {
     "sqlite3": "^5.0.2"
   },
   "scripts": {
-    "start": "cds run"
+    "start": "cds run",
+    "watch": "cds build && cds watch"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",

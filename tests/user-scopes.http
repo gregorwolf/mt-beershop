@@ -1,0 +1,4 @@
+###
+GET {{$dotenv localhost}}/catalog/UserScopes
+  ?$count=true
+Authorization: Basic admin:

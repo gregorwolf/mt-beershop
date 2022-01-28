@@ -6,7 +6,17 @@ service CatalogService {
     @odata.draft.enabled
     entity Beers     as projection on my.Beers;
 
+    @readonly
     entity Suppliers as projection on external.Suppliers {
-        key Id as ID, Name
+        key Id as ID @(title : '{i18n>ID}'), Name @(title : '{i18n>Name}')
+    };
+
+    @readonly
+    entity UserScopes {
+        key username  : String  @(title : '{i18n>username}');
+            email     : String  @(title : '{i18n>email}');
+            firstname : String  @(title : '{i18n>firstname}');
+            lastname  : String  @(title : '{i18n>lastname}');
+            is_admin  : Boolean @(title : '{i18n>is_admin}');
     };
 }

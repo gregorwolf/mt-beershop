@@ -62,8 +62,10 @@ localhost=http://localhost:4004
 start the CAP Backend using:
 
 ```
-cds watch
+npm run watch
 ```
+
+This script does include the `cds build` step as otherwise the deployment to the HDI container fails as the MTX module returns `no model found, skip build`.
 
 Create a new subscription using the PUT request in _tests/01-subscribe.http_. Test the endpoints with _tests/beershop.http_. You can also open http://localhost:4004/ via a browser and test the Fiori preview of the Beers entity.
 

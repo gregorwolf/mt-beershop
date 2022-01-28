@@ -31,6 +31,9 @@ modules:
     - name: mt-beershop-db-mt
     - name: mt-beershop-uaa-mt
     - name: mt-beershop-registry
+    - name: mt-beershop-destination
+    # Required for on-premise connectivity only
+    - name: mt-beershop-connectivity
     provides:
     - name: srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
@@ -62,6 +65,19 @@ resources:
       config:
         xsappname: mt-beershop-${space}    #  name + space dependency
         tenant-mode: shared
+
+  - name: mt-beershop-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+
+  # Required for on-premise connectivity only
+  - name: mt-beershop-connectivity
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: connectivity
+      service-plan: lite
 
   - name: mt-beershop-registry
     type: org.cloudfoundry.managed-service

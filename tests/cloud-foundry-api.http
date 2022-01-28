@@ -1,0 +1,95 @@
+###
+# @name access_token_request
+POST {{$dotenv token_endpoint}}/oauth/token
+Accept: application/json;charset=utf8
+Authorization: Basic cf:
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&username={{$dotenv username}}
+&password={{$dotenv password}}
+
+###
+@accToken = {{access_token_request.response.body.access_token}}
+
+### List all Organizations
+# @name organizations
+GET {{$dotenv cf_url}}/v3/organizations
+Authorization: Bearer {{accToken}}
+###
+@orgGuid={{organizations.response.body.resources[0].guid}}
+
+### Filter Organization by name
+GET {{$dotenv cf_url}}/v3/organizations
+  ?names=dev-azure
+Authorization: Bearer {{accToken}}
+### Details of specific Organization
+GET {{$dotenv cf_url}}/v3/organizations/{{orgGuid}}
+Authorization: Bearer {{accToken}}
+###
+# @name spaces
+GET {{$dotenv cf_url}}/v3/spaces
+Authorization: Bearer {{accToken}}
+###
+@spaceGuid={{spaces.response.body.resources[0].guid}}
+###
+GET {{$dotenv cf_url}}/v3/spaces/{{spaceGuid}}
+Authorization: Bearer {{accToken}}
+###
+# @name apps
+GET {{$dotenv cf_url}}/v3/apps
+  ?organization_guids={{orgGuid}}
+  &space_guids={{spaceGuid}}
+  &names=mt-beershop-srv
+Authorization: Bearer {{accToken}}
+###
+@appGuid={{apps.response.body.resources[0].guid}}
+###
+GET {{$dotenv cf_url}}/v3/domains
+Authorization: Bearer {{accToken}}
+
+### Create Route
+# @name route
+POST {{$dotenv cf_url}}/v3/routes
+Authorization: Bearer {{accToken}}
+Content-Type: application/json
+
+{
+    "host": "tenantHost",
+    "relationships": {
+        "space": {
+            "data": {
+                "guid": "{{spaceGuid}}"
+            }
+        },
+        "domain": {
+            "data": {
+                "guid": "CFInfo.domain_id"
+            }
+        }
+    }
+}
+###
+@routeGuid={{route.response.body.guid}}
+### map route to app
+POST {{$dotenv cf_url}}/v3/routes/{{routeGuid}}/destinations
+Authorization: Bearer {{accToken}}
+Content-Type: application/json
+
+{
+    "destinations": [{
+        "app": {
+            "guid": "{{appGuid}}"
+        }
+    }]
+}
+
+###
+# @name approutes
+GET {{$dotenv cf_url}}/v3/apps/{{appGuid}}/routes?hosts={{$dotenv tenantHost}}
+Authorization: Bearer {{accToken}}
+###
+@routeGuid={{approutes.response.body.resources[0].guid}}
+###
+DELETE {{$dotenv cf_url}}/v3/routes/{{routeGuid}}
+Authorization: Bearer {{accToken}}

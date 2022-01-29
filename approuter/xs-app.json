@@ -1,0 +1,31 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/logout",
+    "logoutPage": "/logout.html"
+  },
+  "routes": [
+    {
+      "source": "/catalog/(.*)$",
+      "target": "/catalog/$1",
+      "authenticationType": "xsuaa",
+      "destination": "srv",
+      "csrfProtection": true
+    },
+    {
+      "source": "^/logout.html$",
+      "target": "/mtbeershop/logout.html",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "none"
+    },
+    {
+      "source": "(.*)",
+      "scope": [
+        "$XSAPPNAME.Read"
+      ],
+      "target": "/mtbeershop/$1",
+      "service": "html5-apps-repo-rt"
+    }
+  ]
+}

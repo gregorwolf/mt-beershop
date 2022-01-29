@@ -30,3 +30,4 @@ mta_archives/
 # .idea
 
 .env
+*.zip

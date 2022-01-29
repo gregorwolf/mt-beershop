@@ -1,0 +1,22 @@
+{
+  "_version": "1.12.0",
+  "sap.app": {
+    "id": "mt-beershop",
+    "type": "application",
+    "title": "Multitenancy Beershop",
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "phone": true,
+      "tablet": true,
+      "desktop": true
+    }
+  },
+  "sap.cloud": {
+    "service": "mt.beershop"
+  }
+}

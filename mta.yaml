@@ -17,12 +17,52 @@ build-parameters:
       - npx -p @sap/cds-dk cds build --production
 
 modules:
+  - name: mt-beershop-ui
+    type: html5
+    path: approuter
+    parameters:
+      memory: 256M
+      disk-quota: 512M
+    properties:
+      TENANT_HOST_PATTERN: '^(.*)-${space}-${app-name}.${default-domain}'
+    requires:
+    - name: mt-beershop-html5-rt
+    - name: mt-beershop-uaa-mt
+    - name: srv_api
+      group: destinations
+      properties:
+        name: srv
+        url: ~{url}
+        forwardAuthToken: true
+  - name: mt-beershop-html5-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: mt-beershop-html5-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - name: mt-beershop-app
+          artifacts:
+            - app-content.zip
+          target-path: resources/
+  - name: mt-beershop-app
+    type: html5
+    path: app
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: []
   # --------------------- SERVER MODULE ------------------------
   - name: mt-beershop-srv
   # ------------------------------------------------------------
     type: nodejs
     path: gen/srv
     parameters:
+      memory: 256M
       buildpack: nodejs_buildpack
     build-parameters:
       builder: npm-ci
@@ -35,14 +75,26 @@ modules:
     # Required for on-premise connectivity only
     - name: mt-beershop-connectivity
     provides:
-    - name: srv-api      # required by consumers of CAP services (e.g. approuter)
+    - name: srv_api      # required by consumers of CAP services (e.g. approuter)
       properties:
-        srv-url: ${default-url}
+        url: ${default-url}
     - name: mtx-api      # potentially required by approuter
       properties:
         mtx-url: ${default-url}
 
 resources:
+  - name: mt-beershop-html5-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+      service-name: ${appname}-html5-host
+  - name: mt-beershop-html5-rt
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
+      service-name: ${appname}-html5-rt
 # services extracted from CAP configuration
 # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
 # ------------------------------------------------------------

@@ -1,0 +1,14 @@
+{
+  "name": "mt-beershop-approuter",
+  "version": "0.0.2",
+  "description": "",
+  "dependencies": {
+    "@sap/approuter": "^10.11.3"
+  },
+  "engines": {
+    "node": "^14"
+  },
+  "scripts": {
+    "start": "node node_modules/@sap/approuter/approuter.js"
+  }
+}

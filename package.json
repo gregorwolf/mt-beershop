@@ -26,7 +26,9 @@
   },
   "scripts": {
     "start": "cds run",
-    "watch": "cds build && cds watch"
+    "watch": "cds build && cds watch",
+    "build": "mbt build",
+    "deploy": "cf deploy mta_archives/mt-beershop_1.0.0.mtar"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",

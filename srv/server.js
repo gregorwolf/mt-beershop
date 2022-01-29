@@ -20,14 +20,53 @@ cds.on("bootstrap", async (app) => {
       await next(); // default implementation creating HDI container
       let tenantHost =
         req.req.body.subscribedSubdomain +
-        "-" +
-        appEnv.app.space_name.toLowerCase().replace(/_/g, "-") +
+        // Don't add space
+        // "-" +
+        // appEnv.app.space_name.toLowerCase().replace(/_/g, "-") +
         "-" +
         services.registry.appName.toLowerCase().replace(/_/g, "-");
-      let tenantURL =
-        "https://" +
-        tenantHost +
-        /\.(.*)/gm.exec(appEnv.app.application_uris[0])[0];
+      let domain = /\.(.*)/gm.exec(appEnv.app.application_uris[0])[1];
+      let tenantURL = "https://" + tenantHost + "-ui." + domain;
+      console.log("Created Tenant URL: ", tenantURL);
+      const cfapi = await cds.connect.to("cfapi");
+      const uiappGuid = (
+        await cfapi.get(
+          `/v3/apps` +
+            `?organization_guids=${appEnv.app.organization_id}` +
+            `&space_guids=${appEnv.app.space_id}` +
+            `&names=mt-beershop-ui`
+        )
+      ).resources[0].guid;
+      const domainGuid = (await cfapi.get(`/v3/domains?names=${domain}`))
+        .resources[0].guid;
+      console.log("UI App GUID: ", uiappGuid);
+      const createRoute = await cfapi.post("/v3/routes", {
+        host: tenantHost,
+        relationships: {
+          space: {
+            data: {
+              guid: appEnv.app.space_id,
+            },
+          },
+          domain: {
+            data: {
+              guid: domainGuid,
+            },
+          },
+        },
+      });
+      const mapRouteToApp = await cfapi.post(
+        `/v3/routes/${createRoute.guid}/destinations`,
+        {
+          destinations: [
+            {
+              app: {
+                guid: uiappGuid,
+              },
+            },
+          ],
+        }
+      );
       return tenantURL;
     });
   });

@@ -3,6 +3,10 @@
   "tenant-mode": "shared",
   "scopes": [
     {
+      "name": "uaa.user",
+      "description": "UAA"
+    },
+    {
       "name": "$XSAPPNAME.ExtendCDS",
       "description": "Extend CDS application"
     },
@@ -33,6 +37,11 @@
   ],
   "role-templates": [
     {
+      "name": "Token_Exchange",
+      "description": "UAA",
+      "scope-references": ["uaa.user"]
+    },
+    {
       "name": "MultitenancyAdministrator",
       "description": "Administrate multitenant applications",
       "scope-references": [
@@ -44,16 +53,12 @@
     {
       "name": "ExtensionDeveloper",
       "description": "Extend application",
-      "scope-references": [
-        "$XSAPPNAME.ExtendCDS"
-      ]
+      "scope-references": ["$XSAPPNAME.ExtendCDS"]
     },
     {
       "name": "ExtensionDeveloperUndeploy",
       "description": "Undeploy extension",
-      "scope-references": [
-        "$XSAPPNAME.ExtendCDSdelete"
-      ]
+      "scope-references": ["$XSAPPNAME.ExtendCDSdelete"]
     }
   ]
 }

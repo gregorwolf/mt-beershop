@@ -8,6 +8,8 @@ version: 1.0.0
 description: "CAP Multitenancy Beershop"
 parameters:
   enable-parallel-deployments: true
+  appname: mt-beershop
+  subdomain: csw-dev-azure
    
 build-parameters:
   before-all:
@@ -20,11 +22,17 @@ modules:
   - name: mt-beershop-ui
     type: html5
     path: approuter
+    build-parameters:
+      ignore: ["node_modules/"]
     parameters:
+#      routes:
+#        - route: https://${subdomain}-${app-name}.${default-domain}
+#        - route: https://dev-azure-sub1-${app-name}.${default-domain}
       memory: 256M
       disk-quota: 512M
+      keep-existing-routes: true
     properties:
-      TENANT_HOST_PATTERN: '^(.*)-${space}-${app-name}.${default-domain}'
+      TENANT_HOST_PATTERN: '^(.*)-${app-name}.${default-domain}'
     requires:
     - name: mt-beershop-html5-rt
     - name: mt-beershop-uaa-mt
@@ -66,6 +74,7 @@ modules:
       buildpack: nodejs_buildpack
     build-parameters:
       builder: npm-ci
+      ignore: ["node_modules/"]
     requires:
     # Resources extracted from CAP configuration
     - name: mt-beershop-db-mt
@@ -88,13 +97,11 @@ resources:
     parameters:
       service: html5-apps-repo
       service-plan: app-host
-      service-name: ${appname}-html5-host
   - name: mt-beershop-html5-rt
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
-      service-name: ${appname}-html5-rt
 # services extracted from CAP configuration
 # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
 # ------------------------------------------------------------
@@ -144,13 +151,13 @@ resources:
       service: saas-registry
       service-plan: application
       config:
-          xsappname: mt-beershop-${space}
-          appName: mt-beershop
+          xsappname: ${appname}-${space}
+          appName: ${appname}
           displayName: mt-beershop
           description: CAP Multitenancy Beershop
-          #category: 'Category'
+          category: Custom Apps
           appUrls:
-            onSubscription: ~{mtx-api/mtx-url}/mtx/v1/provisioning/tenant/{tenantId}
+            onSubscription: https://${org}-${space}-mt-beershop-srv.${default-domain}/mtx/v1/provisioning/tenant/{tenantId}
+            getDependencies: https://${org}-${space}-mt-beershop-srv.${default-domain}/mtx/v1/provisioning/dependencies
             onSubscriptionAsync: false
             onUnSubscriptionAsync: false
-            callbackTimeoutMillis: 300000

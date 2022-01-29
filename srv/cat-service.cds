@@ -17,6 +17,7 @@ service CatalogService {
             email     : String  @(title : '{i18n>email}');
             firstname : String  @(title : '{i18n>firstname}');
             lastname  : String  @(title : '{i18n>lastname}');
+            tenant    : String  @(title : '{i18n>tenant}');
             is_admin  : Boolean @(title : '{i18n>is_admin}');
     };
 

@@ -24,6 +24,9 @@ module.exports = cds.service.impl(async function () {
         lastname: decodedJwt.family_name,
       };
     }
+    if (req.user.tenant) {
+      user.tenant = req.user.tenant;
+    }
     const users = [user];
     users.$count = 1;
     return users;

@@ -10,6 +10,7 @@ annotate RegistrationService.UserScopes with @(UI : {
   LineItem            : [
     {Value : username},
     {Value : email},
+    {Value : tenant},
     {Value : firstname},
     {Value : lastname},
   ],
@@ -27,6 +28,7 @@ annotate RegistrationService.UserScopes with @(UI : {
   FieldGroup #Details : {Data : [
     {Value : username},
     {Value : email},
+    {Value : tenant},
     {Value : firstname},
     {Value : lastname},
   ]}

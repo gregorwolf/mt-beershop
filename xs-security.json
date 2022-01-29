@@ -2,13 +2,29 @@
   "xsappname": "mt-beershop-${space}",
   "tenant-mode": "shared",
   "scopes": [
-    { "name": "$XSAPPNAME.ExtendCDS", "description": "Extend CDS application" },
-    { "name": "$XSAPPNAME.ExtendCDSdelete", "description": "Extend CDS application with undeploy" },
-    { "name": "$XSAPPNAME.MtxDiagnose", "description": "Diagnose MTX sidecar" },
-    { "name": "$XSAPPNAME.mtdeployment", "description": "Deploy applications" },
-    { "name": "$XSAPPNAME.mtcallback", "description": "Subscribe to applications", "grant-as-authority-to-apps": [
-      "$XSAPPNAME(application,sap-provisioning,tenant-onboarding)"
-    ]}
+    {
+      "name": "$XSAPPNAME.ExtendCDS",
+      "description": "Extend CDS application"
+    },
+    {
+      "name": "$XSAPPNAME.ExtendCDSdelete",
+      "description": "Extend CDS application with undeploy"
+    },
+    {
+      "name": "$XSAPPNAME.MtxDiagnose",
+      "description": "Diagnose MTX sidecar"
+    },
+    {
+      "name": "$XSAPPNAME.mtdeployment",
+      "description": "Deploy applications"
+    },
+    {
+      "name": "$XSAPPNAME.mtcallback",
+      "description": "Subscribe to applications",
+      "grant-as-authority-to-apps": [
+        "$XSAPPNAME(application,sap-provisioning,tenant-onboarding)"
+      ]
+    }
   ],
   "authorities": [
     "$XSAPPNAME.MtxDiagnose",

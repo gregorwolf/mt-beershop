@@ -21,7 +21,7 @@ cf service-key mt-beershop-registry dev
 cf service-key mt-beershop-destination dev
 ```
 
-Create _default-env.json_ with this content and the corresponding credentials from the last two commands:
+Create _default-env.json_ with this content and the corresponding credentials from the last 4 commands and also the content for VCAP_APPLICATION from the deployed srv app:
 
 ```JSON
 {
@@ -67,6 +67,7 @@ Create _default-env.json_ with this content and the corresponding credentials fr
       }
     ]
   },
+  "VCAP_APPLICATION": {},
   "destinations": [
     {
       "name": "S4HANA",

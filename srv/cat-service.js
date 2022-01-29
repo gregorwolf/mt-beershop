@@ -29,7 +29,12 @@ module.exports = cds.service.impl(async function () {
     return users;
   });
 
-  this.on("getOrganizations", () => {
+  this.on("SDKgetOrganizations", () => {
     return getOrganizations();
+  });
+
+  this.on("getOrganizations", async () => {
+    const cfapi = await cds.connect.to("cfapi");
+    return cfapi.get("/v3/organizations");
   });
 });

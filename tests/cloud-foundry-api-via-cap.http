@@ -5,5 +5,8 @@ Authorization: Basic admin:
 GET {{$dotenv localhost}}/catalog/$metadata
 Authorization: Basic admin:
 ###
+GET {{$dotenv localhost}}/catalog/SDKgetOrganizations()
+Authorization: Basic admin:
+###
 GET {{$dotenv localhost}}/catalog/getOrganizations()
 Authorization: Basic admin:

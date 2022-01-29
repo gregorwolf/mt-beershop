@@ -83,6 +83,15 @@
         }
       },
       "multitenancy": true,
+      "cfapi": {
+        "kind": "rest",
+        "credentials": {
+          "destination": "CFAPI"
+        },
+        "destinationOptions": {
+          "selectionStrategy": "alwaysProvider"
+        }
+      },
       "EPM_REF_APPS_PROD_MAN_SRV": {
         "kind": "odata-v2",
         "model": "srv/external/EPM_REF_APPS_PROD_MAN_SRV",

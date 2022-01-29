@@ -20,5 +20,6 @@ service CatalogService {
             is_admin  : Boolean @(title : '{i18n>is_admin}');
     };
 
+    function SDKgetOrganizations() returns String;
     function getOrganizations() returns String;
 }

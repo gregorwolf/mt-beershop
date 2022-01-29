@@ -40,7 +40,7 @@ Authorization: Bearer {{accToken}}
 GET {{$dotenv cf_url}}/v3/apps
   ?organization_guids={{orgGuid}}
   &space_guids={{spaceGuid}}
-  &names=mt-beershop-srv
+  &names=mt-beershop-ui
 Authorization: Bearer {{accToken}}
 ###
 @appGuid={{apps.response.body.resources[0].guid}}

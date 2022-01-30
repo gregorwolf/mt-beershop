@@ -29,7 +29,8 @@
     "watch": "cds build && cds watch",
     "build": "mbt build",
     "deploy": "cf deploy mta_archives/mt-beershop_1.0.0.mtar",
-    "deploy:srv": "cf deploy mta_archives/mt-beershop_1.0.0.mtar -m mt-beershop-srv"
+    "deploy:srv": "cf deploy mta_archives/mt-beershop_1.0.0.mtar -m mt-beershop-srv",
+    "deploy:ui": "cf deploy mta_archives/mt-beershop_1.0.0.mtar -m mt-beershop-ui"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",

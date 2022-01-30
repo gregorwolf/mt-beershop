@@ -53,16 +53,29 @@ modules:
     build-parameters:
       build-result: resources
       requires:
-        - name: mt-beershop-app
+        - name: mt-beershop-static
           artifacts:
-            - app-content.zip
+            - static.zip
           target-path: resources/
-  - name: mt-beershop-app
+        - name: mt-beershop-user-scopes
+          artifacts:
+            - user-scopes.zip
+          target-path: resources/
+  - name: mt-beershop-static
     type: html5
-    path: app
+    path: app/static
     build-parameters:
       builder: custom
       commands:
+        - npm run build
+      supported-platforms: []
+  - name: mt-beershop-user-scopes
+    type: html5
+    path: app/user-scopes
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
         - npm run build
       supported-platforms: []
   # --------------------- SERVER MODULE ------------------------

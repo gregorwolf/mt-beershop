@@ -1,9 +1,9 @@
 {
-  "welcomeFile": "/index.html",
+  "welcomeFile": "/mtbeershopstatic/index.html",
   "authenticationMethod": "route",
   "logout": {
     "logoutEndpoint": "/logout",
-    "logoutPage": "/logout.html"
+    "logoutPage": "/mtbeershopstatic/logout.html"
   },
   "routes": [
     {
@@ -14,15 +14,16 @@
       "csrfProtection": true
     },
     {
-      "source": "^/logout.html$",
-      "target": "/mtbeershop/logout.html",
+      "source": "^/mtbeershopstatic/logout.html$",
+      "target": "/mtbeershopstatic/logout.html",
       "service": "html5-apps-repo-rt",
       "authenticationType": "none"
     },
     {
-      "source": "(.*)",
-      "target": "/mtbeershop/$1",
-      "service": "html5-apps-repo-rt"
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
     }
   ]
 }

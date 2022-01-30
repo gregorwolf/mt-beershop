@@ -1,7 +1,7 @@
 {
   "_version": "1.29.0",
   "sap.cloud": {
-    "public": true,
+    "public": false,
     "service": "mt.beershop"
   },
   "sap.app": {
@@ -95,17 +95,12 @@
         {
           "pattern": ":?query:",
           "name": "UserScopesList",
-          "target": [
-            "UserScopesList"
-          ]
+          "target": ["UserScopesList"]
         },
         {
           "pattern": "UserScopes({key}):?query:",
           "name": "UserScopesObjectPage",
-          "target": [
-            "UserScopesList",
-            "UserScopesObjectPage"
-          ]
+          "target": ["UserScopesList", "UserScopesObjectPage"]
         },
         {
           "pattern": "UserScopes({key})/queries({key2}):?query:",

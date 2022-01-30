@@ -4,7 +4,7 @@
 ## approuter=
 _schema-version: '3.1'
 ID: mt-beershop
-version: 1.0.0
+version: 1.0.1
 description: "CAP Multitenancy Beershop"
 parameters:
   enable-parallel-deployments: true
@@ -137,7 +137,7 @@ resources:
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
-      service-plan: application  
+      service-plan: broker  
       path: ./xs-security.json
       config:
         xsappname: mt-beershop-${space}    #  name + space dependency

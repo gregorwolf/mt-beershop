@@ -1,9 +1,9 @@
 {
-  "name": "mt-beershop-app",
+  "name": "mt-beershop-static",
   "version": "0.0.1",
   "scripts": {
     "build": "npm run clean && npm run zip",
-    "clean": "npx rimraf app-content.zip dist",
-    "zip": "npx bestzip app-content.zip *"
+    "clean": "npx rimraf static.zip dist",
+    "zip": "npx bestzip static.zip *"
   }
 }

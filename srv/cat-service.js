@@ -13,13 +13,12 @@ module.exports = cds.service.impl(async function () {
     return bupa.run(req.query);
   });
   this.on("READ", "SdkSuppliers", async (req) => {
-    const response = await executeHttpRequest(
-      getDestinationNameAndJwt(req, "S4HANA"),
-      {
-        method: "get",
-        url: "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Suppliers?$top=2&$select=Id,Name",
-      }
-    );
+    const destinationNameAndJwt = getDestinationNameAndJwt(req, "S4HANA");
+    console.log("destinationNameAndJwt: ", destinationNameAndJwt);
+    const response = await executeHttpRequest(destinationNameAndJwt, {
+      method: "get",
+      url: "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Suppliers?$top=2&$select=Id,Name",
+    });
     return response.data.d.results;
   });
 

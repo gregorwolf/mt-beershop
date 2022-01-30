@@ -37,6 +37,9 @@ modules:
     requires:
     - name: mt-beershop-html5-rt
     - name: mt-beershop-uaa-mt
+    - name: mt-beershop-destination
+    # Required for on-premise connectivity only
+    - name: mt-beershop-connectivity
     - name: srv_api
       group: destinations
       properties:

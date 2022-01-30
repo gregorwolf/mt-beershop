@@ -31,7 +31,8 @@
     "deploy": "cf deploy mta_archives/mt-beershop_1.0.0.mtar",
     "deploy:srv": "cf deploy mta_archives/mt-beershop_1.0.0.mtar -m mt-beershop-srv",
     "deploy:html5": "cf deploy mta_archives/mt-beershop_1.0.0.mtar -m mt-beershop-html5-deployer",
-    "deploy:ui": "cf deploy mta_archives/mt-beershop_1.0.0.mtar -m mt-beershop-ui"
+    "deploy:ui": "cf deploy mta_archives/mt-beershop_1.0.0.mtar -m mt-beershop-ui",
+    "undeploy": "cf undeploy mt-beershop --delete-service-keys --delete-services --delete-service-brokers"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",

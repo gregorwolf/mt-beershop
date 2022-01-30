@@ -14,6 +14,16 @@
       "csrfProtection": true
     },
     {
+      "source": "^/destination/([^/]+)/(.*)$",
+      "target": "$2",
+      "destination": "$1"
+    },
+    {
+      "source": "/sap/(.*)$",
+      "target": "/sap/$1",
+      "destination": "S4HANA"
+    },
+    {
       "source": "^/mtbeershopstatic/logout.html$",
       "target": "/mtbeershopstatic/logout.html",
       "service": "html5-apps-repo-rt",

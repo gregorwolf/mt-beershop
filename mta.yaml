@@ -73,6 +73,7 @@ modules:
     type: html5
     path: app/user-scopes
     build-parameters:
+      build-result: dist
       builder: custom
       commands:
         - npm install

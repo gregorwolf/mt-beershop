@@ -1,12 +1,26 @@
 const cds = require("@sap/cds");
-const { retrieveJwt, verifyJwt } = require("@sap-cloud-sdk/core");
+const {
+  executeHttpRequest,
+  retrieveJwt,
+  verifyJwt,
+} = require("@sap-cloud-sdk/core");
+const { getDestinationNameAndJwt } = require("./lib/connection-helper");
 const { getOrganizations } = require("./cf-api");
 
 module.exports = cds.service.impl(async function () {
-  const bupa = await cds.connect.to("EPM_REF_APPS_PROD_MAN_SRV");
-
-  this.on("READ", "Suppliers", (req) => {
+  this.on("READ", "Suppliers", async (req) => {
+    const bupa = await cds.connect.to("EPM_REF_APPS_PROD_MAN_SRV");
     return bupa.run(req.query);
+  });
+  this.on("READ", "SdkSuppliers", async (req) => {
+    const response = await executeHttpRequest(
+      getDestinationNameAndJwt(req, "S4HANA"),
+      {
+        method: "get",
+        url: "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Suppliers?$top=2&$select=Id,Name",
+      }
+    );
+    return response.data.d.results;
   });
 
   this.on("READ", "UserScopes", async (req) => {

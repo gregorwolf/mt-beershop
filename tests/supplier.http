@@ -3,3 +3,6 @@ GET {{$dotenv localhost}}/catalog/Suppliers
     ?$count=true
     &$top=2
 Authorization: Basic admin:
+###
+GET {{$dotenv localhost}}/catalog/SdkSuppliers
+Authorization: Basic admin:

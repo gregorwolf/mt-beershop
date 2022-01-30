@@ -4,11 +4,16 @@ using {EPM_REF_APPS_PROD_MAN_SRV as external} from './external/EPM_REF_APPS_PROD
 @(requires : 'authenticated-user')
 service CatalogService {
     @odata.draft.enabled
-    entity Beers     as projection on my.Beers;
+    entity Beers        as projection on my.Beers;
 
     @readonly
-    entity Suppliers as projection on external.Suppliers {
+    entity Suppliers    as projection on external.Suppliers {
         key Id as ID @(title : '{i18n>ID}'), Name @(title : '{i18n>Name}')
+    };
+
+    @readonly
+    entity SdkSuppliers as projection on external.Suppliers {
+        key Id @(title : '{i18n>ID}'), Name @(title : '{i18n>Name}')
     };
 
     @readonly

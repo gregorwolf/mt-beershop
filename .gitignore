@@ -31,3 +31,4 @@ mta_archives/
 
 .env
 *.zip
+dist/

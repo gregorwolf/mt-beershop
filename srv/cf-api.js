@@ -21,59 +21,72 @@ async function getOrganizations(req) {
 
 async function createRoute(appEnv, tenantHost, domain) {
   const cfAPIdestination = await getCFAPIdestination();
-  const uiappGuid = (
+  // check if route exists
+  const routes = (
     await executeHttpRequest(cfAPIdestination, {
       method: "get",
       url:
-        `/v3/apps` +
+        `/v3/routes` +
         `?organization_guids=${appEnv.app.organization_id}` +
         `&space_guids=${appEnv.app.space_id}` +
-        `&names=mt-beershop-ui`,
+        `&hosts=${tenantHost}`,
     })
-  ).data.resources[0].guid;
-  console.log("UI App GUID: ", uiappGuid);
-  const domainGuid = (
-    await executeHttpRequest(cfAPIdestination, {
-      method: "get",
-      url: `/v3/domains?names=${domain}`,
-    })
-  ).data.resources[0].guid;
-  console.log("Domain GUID: ", domainGuid);
-  const routeGuid = (
-    await executeHttpRequest(cfAPIdestination, {
+  ).data.resources;
+  if (routes.length === 0) {
+    const uiappGuid = (
+      await executeHttpRequest(cfAPIdestination, {
+        method: "get",
+        url:
+          `/v3/apps` +
+          `?organization_guids=${appEnv.app.organization_id}` +
+          `&space_guids=${appEnv.app.space_id}` +
+          `&names=mt-beershop-ui`,
+      })
+    ).data.resources[0].guid;
+    console.log("UI App GUID: ", uiappGuid);
+    const domainGuid = (
+      await executeHttpRequest(cfAPIdestination, {
+        method: "get",
+        url: `/v3/domains?names=${domain}`,
+      })
+    ).data.resources[0].guid;
+    console.log("Domain GUID: ", domainGuid);
+    const routeGuid = (
+      await executeHttpRequest(cfAPIdestination, {
+        method: "post",
+        url: "/v3/routes",
+        data: {
+          host: tenantHost,
+          relationships: {
+            space: {
+              data: {
+                guid: appEnv.app.space_id,
+              },
+            },
+            domain: {
+              data: {
+                guid: domainGuid,
+              },
+            },
+          },
+        },
+      })
+    ).data.guid;
+    console.log("Route GUID: ", routeGuid);
+    const mapRouteToApp = await executeHttpRequest(cfAPIdestination, {
       method: "post",
-      url: "/v3/routes",
+      url: `/v3/routes/${routeGuid}/destinations`,
       data: {
-        host: tenantHost,
-        relationships: {
-          space: {
-            data: {
-              guid: appEnv.app.space_id,
+        destinations: [
+          {
+            app: {
+              guid: uiappGuid,
             },
           },
-          domain: {
-            data: {
-              guid: domainGuid,
-            },
-          },
-        },
+        ],
       },
-    })
-  ).data.guid;
-  console.log("Route GUID: ", routeGuid);
-  const mapRouteToApp = await executeHttpRequest(cfAPIdestination, {
-    method: "post",
-    url: `/v3/routes/${routeGuid}/destinations`,
-    data: {
-      destinations: [
-        {
-          app: {
-            guid: uiappGuid,
-          },
-        },
-      ],
-    },
-  });
+    });
+  }
 }
 
 async function getCFAPIdestination() {

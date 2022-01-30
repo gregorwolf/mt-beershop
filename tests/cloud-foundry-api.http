@@ -47,7 +47,12 @@ Authorization: Bearer {{accToken}}
 ###
 GET {{$dotenv cf_url}}/v3/domains
 Authorization: Bearer {{accToken}}
-
+###
+GET {{$dotenv cf_url}}/v3/routes
+  ?organization_guids={{orgGuid}}
+  &space_guids={{spaceGuid}}
+  &hosts=dev-azure-sub1-mt-beershop-ui
+Authorization: Bearer {{accToken}}
 ### Create Route
 # @name route
 POST {{$dotenv cf_url}}/v3/routes

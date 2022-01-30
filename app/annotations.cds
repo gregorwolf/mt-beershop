@@ -1,6 +1,6 @@
 using {CatalogService} from '../srv/cat-service';
 
-annotate RegistrationService.UserScopes with @(UI : {
+annotate CatalogService.UserScopes with @(UI : {
   SelectionFields     : [
     username,
     email,

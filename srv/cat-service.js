@@ -32,11 +32,11 @@ module.exports = cds.service.impl(async function () {
     return users;
   });
 
-  this.on("SDKgetOrganizations", () => {
-    return getOrganizations();
+  this.on("SDKgetOrganizations", (req) => {
+    return getOrganizations(req);
   });
 
-  this.on("getOrganizations", async () => {
+  this.on("getOrganizations", async (req) => {
     const cfapi = await cds.connect.to("cfapi");
     return cfapi.get("/v3/organizations");
   });

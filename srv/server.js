@@ -30,7 +30,8 @@ cds.on("bootstrap", async (app) => {
       let tenantURL = "https://" + tenantHost + "-ui." + domain;
       console.log("Created Tenant URL: ", tenantURL);
       // Read CF Organizations via Cloud SDK
-      // console.log(getOrganizations());
+      const cfOrgs = getOrganizations(req);
+      console.log("Cloud Foundry Organizations", cfOrgs.resources);
       // Fails with:
       // Could not fetch client credentials token for service of type "destination"
       /*

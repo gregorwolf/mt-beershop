@@ -33,6 +33,7 @@ modules:
       keep-existing-routes: true
     properties:
       TENANT_HOST_PATTERN: '^(.*)-${app-name}.${default-domain}'
+      SEND_XFRAMEOPTIONS: false
     requires:
     - name: mt-beershop-html5-rt
     - name: mt-beershop-uaa-mt

@@ -25,16 +25,16 @@ cds.on("bootstrap", async (app) => {
         // "-" +
         // appEnv.app.space_name.toLowerCase().replace(/_/g, "-") +
         "-" +
-        services.registry.appName.toLowerCase().replace(/_/g, "-");
+        services.registry.appName.toLowerCase().replace(/_/g, "-") +
+        "-ui";
       let domain = /\.(.*)/gm.exec(appEnv.app.application_uris[0])[1];
-      let tenantURL = "https://" + tenantHost + "-ui." + domain;
+      let tenantURL = "https://" + tenantHost + "." + domain;
       console.log("Created Tenant URL: ", tenantURL);
       // Read CF Organizations via Cloud SDK
-      const cfOrgs = getOrganizations(req);
+      const cfOrgs = await getOrganizations(req);
       console.log("Cloud Foundry Organizations", cfOrgs.resources);
       // Fails with:
       // Could not fetch client credentials token for service of type "destination"
-      /*
       const cfapi = await cds.connect.to("cfapi");
       const uiappGuid = (
         await cfapi.get(
@@ -74,7 +74,6 @@ cds.on("bootstrap", async (app) => {
           ],
         }
       );
-      */
       return tenantURL;
     });
   });

@@ -1,5 +1,9 @@
 {
   "_version": "1.12.0",
+  "sap.cloud": {
+    "public": true,
+    "service": "mt.beershop"
+  },
   "sap.app": {
     "id": "mt.beershop.static",
     "type": "application",
@@ -15,8 +19,5 @@
       "tablet": true,
       "desktop": true
     }
-  },
-  "sap.cloud": {
-    "service": "mt.beershop"
   }
 }

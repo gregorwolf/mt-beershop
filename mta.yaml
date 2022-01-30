@@ -175,7 +175,7 @@ resources:
           description: CAP Multitenancy Beershop
           category: Custom Apps
           appUrls:
-            onSubscription: https://${org}-${space}-mt-beershop-srv.${default-domain}/mtx/v1/provisioning/tenant/{tenantId}
-            getDependencies: https://${org}-${space}-mt-beershop-srv.${default-domain}/mtx/v1/provisioning/dependencies
+            onSubscription: ~{mtx-api/mtx-url}/mtx/v1/provisioning/tenant/{tenantId}
+            getDependencies: ~{mtx-api/mtx-url}/mtx/v1/provisioning/dependencies
             onSubscriptionAsync: false
             onUnSubscriptionAsync: false

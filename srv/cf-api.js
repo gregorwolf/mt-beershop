@@ -1,15 +1,83 @@
 const { getDestinationNameAndJwt } = require("./lib/connection-helper");
-const { executeHttpRequest } = require("@sap-cloud-sdk/core");
+const {
+  executeHttpRequest,
+  getDestinationFromDestinationService,
+} = require("@sap-cloud-sdk/core");
 
 const destinationName = process.env.CFAPI_DESTINATION || "CFAPI";
+const options = {
+  iss: "https://csw-dev-azure.authentication.eu20.hana.ondemand.com/oauth/token",
+};
 async function getOrganizations(req) {
   const destinationNameAndJwt = getDestinationNameAndJwt(req, destinationName);
   console.log("destinationNameAndJwt: ", destinationNameAndJwt);
-  const response = await executeHttpRequest(destinationNameAndJwt, {
+
+  const response = await executeHttpRequest(await getCFAPIdestination(), {
     method: "get",
     url: "/v3/organizations",
   });
   return response.data;
 }
 
-module.exports = { getOrganizations };
+async function createRoute(appEnv, tenantHost, domain) {
+  const cfAPIdestination = await getCFAPIdestination();
+  const uiappGuid = (
+    await executeHttpRequest(cfAPIdestination, {
+      method: "get",
+      url:
+        `/v3/apps` +
+        `?organization_guids=${appEnv.app.organization_id}` +
+        `&space_guids=${appEnv.app.space_id}` +
+        `&names=mt-beershop-ui`,
+    })
+  ).data.resources[0].guid;
+  console.log("UI App GUID: ", uiappGuid);
+  const domainGuid = (
+    await executeHttpRequest(cfAPIdestination, {
+      method: "get",
+      url: `/v3/domains?names=${domain}`,
+    })
+  ).data.resources[0].guid;
+  console.log("Domain GUID: ", domainGuid);
+  const routeGuid = (
+    await executeHttpRequest(cfAPIdestination, {
+      method: "post",
+      url: "/v3/routes",
+      data: {
+        host: tenantHost,
+        relationships: {
+          space: {
+            data: {
+              guid: appEnv.app.space_id,
+            },
+          },
+          domain: {
+            data: {
+              guid: domainGuid,
+            },
+          },
+        },
+      },
+    })
+  ).data.guid;
+  console.log("Route GUID: ", routeGuid);
+  const mapRouteToApp = await executeHttpRequest(cfAPIdestination, {
+    method: "post",
+    url: `/v3/routes/${routeGuid}/destinations`,
+    data: {
+      destinations: [
+        {
+          app: {
+            guid: uiappGuid,
+          },
+        },
+      ],
+    },
+  });
+}
+
+async function getCFAPIdestination() {
+  return getDestinationFromDestinationService(destinationName, options);
+}
+
+module.exports = { getOrganizations, createRoute };

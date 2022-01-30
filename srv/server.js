@@ -1,5 +1,5 @@
 const cds = require("@sap/cds");
-const { getOrganizations } = require("./cf-api");
+const { getOrganizations, createRoute } = require("./cf-api");
 const cfenv = require("cfenv");
 const appEnv = cfenv.getAppEnv();
 
@@ -40,7 +40,7 @@ cds.on("bootstrap", async (app) => {
       }
       // Fails with:
       // Could not fetch client credentials token for service of type "destination"
-      if (process.env.CREATE_ROUTE) {
+      if (process.env.CREATE_ROUTE && process.env.CREATE_ROUTE === "CAP") {
         const cfapi = await cds.connect.to("cfapi");
         const uiappGuid = (
           await cfapi.get(
@@ -80,6 +80,8 @@ cds.on("bootstrap", async (app) => {
             ],
           }
         );
+      } else {
+        await createRoute(appEnv, tenantHost, domain);
       }
       return tenantURL;
     });

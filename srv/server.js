@@ -17,6 +17,9 @@ cds.on("bootstrap", async (app) => {
 
   const provisioning = await cds.connect.to("ProvisioningService");
   provisioning.prepend(() => {
+    provisioning.on("DELETE", "tenant", async (req) => {
+      console.log("Custom tenant DELETE handler - path: ", req.path);
+    });
     provisioning.on("UPDATE", "tenant", async (req, next) => {
       await next(); // default implementation creating HDI container
       let tenantHost =

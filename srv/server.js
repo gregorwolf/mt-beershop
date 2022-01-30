@@ -1,4 +1,5 @@
 const cds = require("@sap/cds");
+const { getOrganizations } = require("./cf-api");
 const cfenv = require("cfenv");
 const appEnv = cfenv.getAppEnv();
 
@@ -28,6 +29,11 @@ cds.on("bootstrap", async (app) => {
       let domain = /\.(.*)/gm.exec(appEnv.app.application_uris[0])[1];
       let tenantURL = "https://" + tenantHost + "-ui." + domain;
       console.log("Created Tenant URL: ", tenantURL);
+      // Read CF Organizations via Cloud SDK
+      // console.log(getOrganizations());
+      // Fails with:
+      // Could not fetch client credentials token for service of type "destination"
+      /*
       const cfapi = await cds.connect.to("cfapi");
       const uiappGuid = (
         await cfapi.get(
@@ -67,6 +73,7 @@ cds.on("bootstrap", async (app) => {
           ],
         }
       );
+      */
       return tenantURL;
     });
   });

@@ -121,7 +121,8 @@
         "com.sap.",
         "sap."
       ],
-      "dependencies": []
+      "dependencies": [
+      ]
     }
   }
 }

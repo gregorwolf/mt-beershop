@@ -15,14 +15,19 @@ const services = xsenv.getServices({
   dest: { tag: "destination" },
 });
 
+cds.env.mtx.dependencies = [services.dest.xsappname];
+
 cds.on("mtx", async () => {
   console.log("on mtx reached");
   const provisioning = await cds.connect.to("ProvisioningService");
+
   provisioning.prepend(() => {
     console.log("prepend event handlers for ProvisioningService");
+
     provisioning.on("DELETE", "tenant", async (req) => {
       console.log("Custom tenant DELETE handler - path: ", req.path);
     });
+
     provisioning.on("UPDATE", "tenant", async (req, next) => {
       await next(); // default implementation creating HDI container
       let tenantHost =

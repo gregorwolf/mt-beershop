@@ -2,11 +2,13 @@ const cds = require("@sap/cds");
 const {
   executeHttpRequest,
   getDestinationFromDestinationService,
+  getDestination,
   retrieveJwt,
   verifyJwt,
 } = require("@sap-cloud-sdk/core");
 const { getDestinationNameAndJwt } = require("./lib/connection-helper");
 const { getOrganizations } = require("./cf-api");
+const s4hanaDestinationName = "S4HANA";
 
 async function decodeJwt(req) {
   let jwt = retrieveJwt(req);
@@ -30,7 +32,7 @@ module.exports = cds.service.impl(async function () {
         iss: decodedJwt.iss,
       };
       const destination = await getDestinationFromDestinationService(
-        "S4HANA",
+        s4hanaDestinationName,
         options
       );
       const response = await executeHttpRequest(destination, {
@@ -44,9 +46,18 @@ module.exports = cds.service.impl(async function () {
   });
 
   this.on("READ", "SdkJwtSuppliers", async (req) => {
-    const destinationNameAndJwt = getDestinationNameAndJwt(req, "S4HANA");
-    console.log("destinationNameAndJwt: ", destinationNameAndJwt);
-    const response = await executeHttpRequest(destinationNameAndJwt, {
+    const userJwt = await retrieveJwt(req);
+    console.log("userJwt: ", userJwt);
+    const options = {};
+    if (userJwt) {
+      options.userJwt = userJwt;
+    }
+    const destination = await getDestinationFromDestinationService(
+      s4hanaDestinationName,
+      options
+    );
+    console.log("destination: ", destination);
+    const response = await executeHttpRequest(destination, {
       method: "get",
       url: "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Suppliers?$top=2&$select=Id,Name",
     });

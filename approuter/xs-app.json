@@ -13,7 +13,7 @@
       "csrfProtection": true
     },
     {
-      "source": "^/destination/([^/]+)/(.*)$",
+      "source": "/destination/([^/]+)/(.*)$",
       "target": "$2",
       "destination": "$1"
     },
@@ -23,14 +23,19 @@
       "destination": "S4HANA"
     },
     {
-      "source": "^/mtbeershopstatic/logout.html$",
+      "source": "/mtbeershopstatic/logout.html$",
       "target": "/mtbeershopstatic/logout.html",
       "service": "html5-apps-repo-rt",
       "authenticationType": "none"
     },
     {
-      "source": "^(.*)$",
-      "target": "$1",
+      "source": "/mtbeershopstatic/(.*)$",
+      "target": "/mtbeershopstatic/$1",
+      "service": "html5-apps-repo-rt"
+    },
+    {
+      "source": "/mtbeershopuserscopes/(.*)$",
+      "target": "/mtbeershopuserscopes/$1",
       "service": "html5-apps-repo-rt"
     }
   ]

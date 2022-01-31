@@ -16,8 +16,10 @@ const services = xsenv.getServices({
 });
 
 cds.on("mtx", async () => {
+  console.log("on mtx reached");
   const provisioning = await cds.connect.to("ProvisioningService");
   provisioning.prepend(() => {
+    console.log("prepend event handlers for ProvisioningService");
     provisioning.on("DELETE", "tenant", async (req) => {
       console.log("Custom tenant DELETE handler - path: ", req.path);
     });

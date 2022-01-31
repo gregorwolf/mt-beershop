@@ -2,7 +2,6 @@ const cds = require("@sap/cds");
 const {
   executeHttpRequest,
   getDestinationFromDestinationService,
-  getDestination,
   retrieveJwt,
   verifyJwt,
 } = require("@sap-cloud-sdk/core");
@@ -45,7 +44,7 @@ module.exports = cds.service.impl(async function () {
     }
   });
 
-  this.on("READ", "SdkJwtSuppliers", async (req) => {
+  this.on("READ", "SdkDestSuppliers", async (req) => {
     const userJwt = await retrieveJwt(req);
     console.log("userJwt: ", userJwt);
     const options = {};
@@ -58,6 +57,19 @@ module.exports = cds.service.impl(async function () {
     );
     console.log("destination: ", destination);
     const response = await executeHttpRequest(destination, {
+      method: "get",
+      url: "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Suppliers?$top=2&$select=Id,Name",
+    });
+    return response.data.d.results;
+  });
+
+  this.on("READ", "SdkJwtSuppliers", async (req) => {
+    const destinationNameAndJwt = getDestinationNameAndJwt(
+      req,
+      s4hanaDestinationName
+    );
+    console.log("destinationNameAndJwt: ", destinationNameAndJwt);
+    const response = await executeHttpRequest(destinationNameAndJwt, {
       method: "get",
       url: "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Suppliers?$top=2&$select=Id,Name",
     });

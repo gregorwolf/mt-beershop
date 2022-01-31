@@ -2,57 +2,43 @@
 <html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pricing App</title>
-
-    <script>
-      window["sap-ushell-config"] = {
-        defaultRenderer: "fiori2",
-        bootstrapPlugins: {
-          RuntimeAuthoringPlugin: {
-            component: "sap.ushell.plugins.rta",
-            config: {
-              validateAppVersion: false,
-            },
-          },
-        },
-        // services: {
-        // EndUserFeedback: {
-        // 	config: {
-        // 		enabled: false
-        // 	}
-        // }
-        // },
-        applications: {
-          "UserScopes-display": {
-            title: "User Scopes",
-            description: "",
-            additionalInformation: "SAPUI5.Component=mt.beershop.user-scopes",
-            applicationType: "URL",
-            url: "./",
-            navigationMode: "embedded",
-          },
-        },
-      };
-    </script>
-
-    <script src="https://sapui5.hana.ondemand.com/1.96.1/test-resources/sap/ushell/bootstrap/sandbox.js"></script>
+    <title>{{appTitle}}</title>
+    <style>
+      html,
+      body,
+      body > div,
+      #container,
+      #container-uiarea {
+        height: 100%;
+      }
+    </style>
     <script
-      src="https://sapui5.hana.ondemand.com/1.96.1/resources/sap-ui-core.js"
-      data-sap-ui-libs="sap.m, sap.ushell, sap.collaboration, sap.ui.layout"
-      data-sap-ui-compatVersion="edge"
+      id="sap-ui-bootstrap"
+      src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
       data-sap-ui-theme="sap_fiori_3"
-      data-sap-ui-frameOptions="allow"
-      data-sap-ui-flexibilityServices='[{"connector": "LocalStorageConnector"}]'
+      data-sap-ui-resourceroots='{
+            "mt.beershop.user-scopes": "."
+        }'
+      data-sap-ui-compatVersion="edge"
+      data-sap-ui-async="true"
+      data-sap-ui-preload="async"
+      data-sap-ui-libs="sap.m"
     ></script>
-    <script>
-      sap.ui
-        .getCore()
-        .attachInit(() =>
-          sap.ushell.Container.createRenderer().placeAt("content")
-        );
-    </script>
+    <script
+      src="./utils/locate-reuse-libs.js"
+      data-sap-ui-manifest-uri="./manifest.json"
+      data-sap-ui-componentName="mt.beershop.user-scopes"
+    ></script>
   </head>
-  <body class="sapUiBody" id="content"></body>
+  <body class="sapUiBody sapUiSizeCompact" id="content">
+    <div
+      data-sap-ui-component
+      data-name="mt.beershop.user-scopes"
+      data-id="container"
+      data-settings='{"id" : "mt.beershop.user-scopes"}'
+      data-handle-validation="true"
+    ></div>
+  </body>
 </html>

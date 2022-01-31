@@ -1,0 +1,20 @@
+### Get Access Token for Destination Service
+# Documentation:
+# https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/7e306250e08340f89d6c103e28840f30.html
+# @name requestDestinationAccessToken
+POST {{$dotenv dest_url}}/oauth/token
+#Authorization: Basic {{$dotenv dest_clientid}}:{{$dotenv dest_clientsecret}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&response_type=token
+&&client_id={{$dotenv dest_clientid}}
+&client_secret={{$dotenv dest_clientsecret}}
+
+### Fill Variables from Response
+@destination_access_token = {{requestDestinationAccessToken.response.body.$.access_token}}
+
+### Read list of destinations
+# @name subaccountDestinations
+GET {{$dotenv dest_uri}}/destination-configuration/v1/subaccountDestinations
+Authorization: Bearer {{destination_access_token}}

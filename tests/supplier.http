@@ -6,3 +6,6 @@ Authorization: Basic admin:
 ###
 GET {{$dotenv localhost}}/catalog/SdkSuppliers
 Authorization: Basic admin:
+###
+GET {{$dotenv localhost}}/catalog/SdkJwtSuppliers
+Authorization: Basic admin:

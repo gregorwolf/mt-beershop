@@ -13,9 +13,10 @@ const services = xsenv.getServices({
   registry: { tag: "SaaS" },
   sm: { label: "service-manager" },
   dest: { tag: "destination" },
+  conn: { tag: "connectivity" },
 });
 
-cds.env.mtx.dependencies = [services.dest.xsappname];
+cds.env.mtx.dependencies = [services.dest.xsappname, services.conn.xsappname];
 
 cds.on("mtx", async () => {
   console.log("on mtx reached");

@@ -15,10 +15,12 @@ cf csk mt-beershop-db-mt dev
 cf csk mt-beershop-uaa-mt dev
 cf csk mt-beershop-registry dev
 cf csk mt-beershop-destination dev
+cf csk mt-beershop-connectivity dev
 cf service-key mt-beershop-db-mt dev
 cf service-key mt-beershop-uaa-mt dev
 cf service-key mt-beershop-registry dev
 cf service-key mt-beershop-destination dev
+cf service-key mt-beershop-connectivity dev
 ```
 
 Create _default-env.json_ with this content and the corresponding credentials from the last 4 commands and also the content for VCAP_APPLICATION from the deployed srv app:
@@ -63,6 +65,14 @@ Create _default-env.json_ with this content and the corresponding credentials fr
           "conn",
           "connsvc"
         ],
+        "credentials": {}
+      }
+    ],
+    "connectivity": [
+      {
+        "label": "connectivity",
+        "name": "mt-beershop-connectivity",
+        "tags": ["connectivity", "conn", "connsvc"],
         "credentials": {}
       }
     ]

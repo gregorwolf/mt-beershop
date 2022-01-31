@@ -37,9 +37,11 @@ modules:
     requires:
     - name: mt-beershop-html5-rt
     - name: mt-beershop-uaa-mt
-    - name: mt-beershop-destination
+    # The bindings destination and connectivity results in the issue:
+    # Error getting client_credentials token for html5-apps-repo-rt from subaccount gregor-subscriber-01 
+    #- name: mt-beershop-destination
     # Required for on-premise connectivity only
-    - name: mt-beershop-connectivity
+    #- name: mt-beershop-connectivity
     - name: srv_api
       group: destinations
       properties:

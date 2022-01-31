@@ -1,10 +1,5 @@
 {
-  "welcomeFile": "/mtbeershopstatic/index.html",
-  "authenticationMethod": "route",
-  "logout": {
-    "logoutEndpoint": "/logout",
-    "logoutPage": "/mtbeershopstatic/logout.html"
-  },
+  "welcomeFile": "/catalog/",
   "routes": [
     {
       "source": "/catalog/(.*)$",
@@ -21,22 +16,6 @@
       "source": "/sap/(.*)$",
       "target": "/sap/$1",
       "destination": "S4HANA"
-    },
-    {
-      "source": "/mtbeershopstatic/logout.html$",
-      "target": "/mtbeershopstatic/logout.html",
-      "service": "html5-apps-repo-rt",
-      "authenticationType": "none"
-    },
-    {
-      "source": "/mtbeershopstatic/(.*)$",
-      "target": "/mtbeershopstatic/$1",
-      "service": "html5-apps-repo-rt"
-    },
-    {
-      "source": "/mtbeershopuserscopes/(.*)$",
-      "target": "/mtbeershopuserscopes/$1",
-      "service": "html5-apps-repo-rt"
     }
   ]
 }

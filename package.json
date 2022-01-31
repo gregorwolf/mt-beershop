@@ -10,16 +10,16 @@
   },
   "dependencies": {
     "@sap-cloud-sdk/core": "^1.53.1",
-    "@sap/cds": "^5",
-    "@sap/cds-mtx": "^2",
-    "@sap/hana-client": "^2",
-    "@sap/hdi-deploy": "^4",
-    "@sap/instance-manager": "^3",
+    "@sap/cds": "^5.8.0",
+    "@sap/cds-mtx": "^2.5.1",
+    "@sap/hana-client": "^2.11.14",
+    "@sap/hdi-deploy": "^4.2.3",
+    "@sap/instance-manager": "^3.2.1",
     "@sap/xsenv": "^3.2.0",
-    "@sap/xssec": "^3",
+    "@sap/xssec": "^3.2.12",
     "cfenv": "^1.2.4",
-    "express": "^4",
-    "passport": "^0"
+    "express": "^4.17.2",
+    "passport": "^0.5.2"
   },
   "devDependencies": {
     "sqlite3": "^5.0.2"

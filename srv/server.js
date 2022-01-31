@@ -15,9 +15,7 @@ const services = xsenv.getServices({
   dest: { tag: "destination" },
 });
 
-cds.on("bootstrap", async (app) => {
-  await cds.mtx.in(app);
-
+cds.on("mtx", async () => {
   const provisioning = await cds.connect.to("ProvisioningService");
   provisioning.prepend(() => {
     provisioning.on("DELETE", "tenant", async (req) => {
@@ -92,11 +90,9 @@ cds.on("bootstrap", async (app) => {
       return tenantURL;
     });
   });
-  return app.use(proxy({
-    path: "v2",
-    port: port
-  }))
 });
+
+cds.on("bootstrap", (app) => app.use(proxy()));
 
 // Delegate bootstrapping to built-in server.js
 module.exports = cds.server;

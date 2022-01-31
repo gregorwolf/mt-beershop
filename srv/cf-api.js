@@ -7,9 +7,9 @@ const {
 const destinationName = process.env.CFAPI_DESTINATION || "CFAPI";
 const options = {
   // CSW Partner
-  // iss: "https://csw-dev-azure.authentication.eu20.hana.ondemand.com/oauth/token",
+  iss: "https://csw-dev-azure.authentication.eu20.hana.ondemand.com/oauth/token",
   // Gregor Wolf Trial
-  iss: "https://60714212trial.authentication.us10.hana.ondemand.com/oauth/token",
+  //iss: "https://60714212trial.authentication.us10.hana.ondemand.com/oauth/token",
 };
 async function getOrganizations(req) {
   const destinationNameAndJwt = getDestinationNameAndJwt(req, destinationName);

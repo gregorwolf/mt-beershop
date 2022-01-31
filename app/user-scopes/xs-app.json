@@ -5,7 +5,6 @@
     {
       "source": "/catalog/(.*)$",
       "target": "/catalog/$1",
-      "authenticationType": "xsuaa",
       "destination": "srv",
       "csrfProtection": true
     },

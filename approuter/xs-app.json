@@ -1,21 +1,8 @@
 {
-  "welcomeFile": "/catalog/",
-  "routes": [
-    {
-      "source": "/catalog/(.*)$",
-      "target": "/catalog/$1",
-      "destination": "srv",
-      "csrfProtection": true
-    },
-    {
-      "source": "/destination/([^/]+)/(.*)$",
-      "target": "$2",
-      "destination": "$1"
-    },
-    {
-      "source": "/sap/(.*)$",
-      "target": "/sap/$1",
-      "destination": "S4HANA"
-    }
-  ]
+  "welcomeFile": "/mtbeershopstatic/",
+  "logout": {
+    "logoutEndpoint": "/do/logout",
+    "logoutPage": "/mtbeershopstatic/logout.html"
+  },
+  "routes": []
 }

@@ -1,0 +1,22 @@
+{
+  "generator-ui5-ts-app-fcl": {
+    "application": "userscopes",
+    "namespace": "be.wl",
+    "endpoint": "http://localhost:4004/catalog/",
+    "entity": "UserScopes",
+    "key": "username",
+    "title": "username",
+    "otherField": "is_admin",
+    "framework": "SAPUI5",
+    "frameworkVersion": "1.98.0",
+    "author": "lemaiwo",
+    "tstypes": "@sapui5/ts-types-esm",
+    "tstypesVersion": "1.98.0",
+    "appId": "be.wl.userscopes",
+    "appURI": "be/wl/userscopes",
+    "origin": "http://localhost:4004",
+    "path": "/catalog/",
+    "pathPrefix": "/catalog",
+    "setupCompleted": true
+  }
+}

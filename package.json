@@ -12,6 +12,7 @@
     "@sap-cloud-sdk/core": "^1.53.1",
     "@sap/cds": "^5.8.0",
     "@sap/cds-mtx": "^2.5.1",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.8.5",
     "@sap/hana-client": "^2.11.14",
     "@sap/hdi-deploy": "^4.2.3",
     "@sap/instance-manager": "^3.2.1",
@@ -83,20 +84,7 @@
         }
       },
       "db": {
-        "kind": "hana",
-        "vcap": {
-          "label": "service-manager"
-        }
-      },
-      "multitenancy": true,
-      "cfapi": {
-        "kind": "rest",
-        "credentials": {
-          "destination": "CFAPI"
-        },
-        "destinationOptions": {
-          "selectionStrategy": "alwaysProvider"
-        }
+        "kind": "hana"
       },
       "EPM_REF_APPS_PROD_MAN_SRV": {
         "kind": "odata-v2",
@@ -113,14 +101,6 @@
     },
     "hana": {
       "deploy-format": "hdbtable"
-    },
-    "mtx": {
-      "element-prefix": "Z_",
-      "namespace-blocklist": [
-        "com.sap.",
-        "sap."
-      ],
-      "dependencies": []
     }
   }
 }

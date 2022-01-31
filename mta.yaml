@@ -66,6 +66,10 @@ modules:
           artifacts:
             - user-scopes.zip
           target-path: resources/
+        - name: mt-beershop-userscopes-fcl
+          artifacts:
+            - user-scopes-fcl.zip
+          target-path: resources/
   - name: mt-beershop-static
     type: html5
     path: app/static
@@ -77,6 +81,16 @@ modules:
   - name: mt-beershop-user-scopes
     type: html5
     path: app/user-scopes
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+  - name: mt-beershop-userscopes-fcl
+    type: html5
+    path: app/be.wl.userscopes
     build-parameters:
       build-result: dist
       builder: custom

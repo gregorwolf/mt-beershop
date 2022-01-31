@@ -1,7 +1,10 @@
 const cds = require("@sap/cds");
+const proxy = require("@sap/cds-odata-v2-adapter-proxy");
 const { getOrganizations, createRoute } = require("./cf-api");
 const cfenv = require("cfenv");
 const appEnv = cfenv.getAppEnv();
+
+const port = process.env.PORT || 4004;
 
 const xsenv = require("@sap/xsenv");
 xsenv.loadEnv();
@@ -89,6 +92,10 @@ cds.on("bootstrap", async (app) => {
       return tenantURL;
     });
   });
+  return app.use(proxy({
+    path: "v2",
+    port: port
+  }))
 });
 
 // Delegate bootstrapping to built-in server.js

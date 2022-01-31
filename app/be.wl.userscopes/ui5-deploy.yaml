@@ -1,0 +1,17 @@
+specVersion: "2.0"
+metadata:
+  name: be.wl.userscopes
+type: application
+#ui5Theme: sap_fiori_3
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+  - name: ui5-task-zipper
+    afterTask: generateCachebusterInfo
+    configuration:
+      archiveName: user-scopes-fcl
+      additionalFiles:
+      - xs-app.json

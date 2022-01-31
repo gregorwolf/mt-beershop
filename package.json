@@ -84,7 +84,20 @@
         }
       },
       "db": {
-        "kind": "hana"
+        "kind": "hana",
+        "vcap": {
+          "label": "service-manager"
+        }
+      },
+      "multitenancy": true,
+      "cfapi": {
+        "kind": "rest",
+        "credentials": {
+          "destination": "CFAPI"
+        },
+        "destinationOptions": {
+          "selectionStrategy": "alwaysProvider"
+        }
       },
       "EPM_REF_APPS_PROD_MAN_SRV": {
         "kind": "odata-v2",
@@ -101,6 +114,14 @@
     },
     "hana": {
       "deploy-format": "hdbtable"
+    },
+    "mtx": {
+      "element-prefix": "Z_",
+      "namespace-blocklist": [
+        "com.sap.",
+        "sap."
+      ],
+      "dependencies": []
     }
   }
 }

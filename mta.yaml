@@ -62,6 +62,10 @@ modules:
           artifacts:
             - static.zip
           target-path: resources/
+        - name: mt-beershop-beers
+          artifacts:
+            - beers.zip
+          target-path: resources/
         - name: mt-beershop-user-scopes
           artifacts:
             - user-scopes.zip
@@ -78,6 +82,16 @@ modules:
       commands:
         - npm run build
       supported-platforms: []
+  - name: mt-beershop-beers
+    type: html5
+    path: app/beers
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []      
   - name: mt-beershop-user-scopes
     type: html5
     path: app/user-scopes

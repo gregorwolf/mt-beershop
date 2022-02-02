@@ -39,13 +39,21 @@
 						<Text text="Title" />
 					</Column>
 					<Column	hAlign="End">
-						<Text text="Other field" />
+						<Text text="Name" />
+					</Column>
+					<Column	hAlign="End">
+						<Text text="Email" />
+					</Column>
+					<Column	hAlign="End">
+						<Text text="Admin" />
 					</Column>
 				</columns>
 				<items>
 					<ColumnListItem type="Navigation" press=".onListItemPress">
 						<cells>
 							<ObjectIdentifier title="{username}" text="{username}" />
+							<Text text="{firstname} {lastname}" />
+							<Text text="{email}" />
 							<Text text="{is_admin}" />
 						</cells>
 					</ColumnListItem>

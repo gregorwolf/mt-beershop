@@ -98,14 +98,14 @@
 			},
 			"routes": [
 				{
-					"pattern": ":layout:",
+					"pattern": ":layout::?query:",
 					"name": "master",
 					"target": [
 						"master"
 					]
 				},
 				{
-					"pattern": "detail/{id}/{layout}",
+					"pattern": "detail/{id}/{layout}:?query:",
 					"name": "detail",
 					"target": [
 						"master",

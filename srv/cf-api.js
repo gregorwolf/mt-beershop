@@ -11,6 +11,11 @@ const options = {
   // Gregor Wolf Trial
   //iss: "https://60714212trial.authentication.us10.hana.ondemand.com/oauth/token",
 };
+
+async function getCFAPIdestination() {
+  return getDestinationFromDestinationService(destinationName, options);
+}
+
 async function getOrganizations(req) {
   const destinationNameAndJwt = getDestinationNameAndJwt(req, destinationName);
   console.log("destinationNameAndJwt: ", destinationNameAndJwt);
@@ -90,10 +95,6 @@ async function createRoute(appEnv, tenantHost, domain) {
       },
     });
   }
-}
-
-async function getCFAPIdestination() {
-  return getDestinationFromDestinationService(destinationName, options);
 }
 
 module.exports = { getOrganizations, createRoute };

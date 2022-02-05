@@ -17,6 +17,7 @@ const services = xsenv.getServices({
 });
 
 cds.env.mtx.dependencies = [services.dest.xsappname, services.conn.xsappname];
+cds.env.odata.protectMetadata = false;
 
 cds.on("mtx", async () => {
   console.log("on mtx reached");

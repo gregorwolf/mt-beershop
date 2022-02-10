@@ -34,6 +34,13 @@ modules:
     properties:
       TENANT_HOST_PATTERN: '^(.*)-${app-name}.${default-domain}'
       SEND_XFRAMEOPTIONS: false
+      CJ_PROTECT_WHITELIST: >
+        [
+          {
+            "protocol": "https",
+            "host": "*.ondemand.com"
+          }
+        ]
     requires:
     - name: mt-beershop-html5-rt
     - name: mt-beershop-uaa-mt

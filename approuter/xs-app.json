@@ -4,5 +4,8 @@
     "logoutEndpoint": "/do/logout",
     "logoutPage": "/mtbeershopstatic/logout.html"
   },
+  "whitelistService": {
+    "endpoint": "/allowlist/service"
+  },
   "routes": []
 }

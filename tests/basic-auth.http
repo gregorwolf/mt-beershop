@@ -1,0 +1,25 @@
+### Get Access Token (HANA) or Cloud Foundry using Password Grant
+# https://blogs.sap.com/2020/03/02/using-postman-for-api-testing-with-xsuaa/
+# @name requestAccessToken
+POST {{$dotenv api_auth_url}}/oauth/token
+Accept: application/json;charset=utf8
+Authorization: Basic {{$dotenv api_client_id}}:{{$dotenv api_client_secret}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&username={{$dotenv api_username}}
+&password={{$dotenv api_password}}
+&client_id={{$dotenv api_client_id}}
+&response_type=token
+&login_hint={"origin":"{{$dotenv api_origin}}"}
+
+### Fill Variables from Response
+@access_token = {{requestAccessToken.response.body.$.access_token}}
+
+### 
+GET {{$dotenv api_url}}/catalog/UserScopes
+Authorization: Bearer {{access_token}}
+
+### 
+GET {{$dotenv api_url}}/catalog/Beers
+Authorization: Bearer {{access_token}}

@@ -23,3 +23,7 @@ Authorization: Bearer {{access_token}}
 ### 
 GET {{$dotenv api_url}}/catalog/Beers
 Authorization: Bearer {{access_token}}
+
+### Send request via Approuter
+GET {{$dotenv api_url_ui}}/mtbeershopstatic/catalog/Beers
+x-approuter-authorization: Bearer {{access_token}}

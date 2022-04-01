@@ -1,5 +1,6 @@
 {
   "welcomeFile": "/mtbeershopstatic/",
+  "authenticationMethod": "route",
   "logout": {
     "logoutEndpoint": "/do/logout",
     "logoutPage": "/mtbeershopstatic/logout.html"
@@ -7,5 +8,23 @@
   "whitelistService": {
     "endpoint": "/allowlist/service"
   },
-  "routes": []
+  "routes": [
+    {
+      "source": "^/user-api(.*)",
+      "target": "$1",
+      "service": "sap-approuter-userapi"
+    },
+    {
+      "source": "/basic-auth/(.*)$",
+      "target": "/$1",
+      "destination": "srv",
+      "authenticationType": "none"
+    },
+    {
+      "source": "/catalog/(.*)$",
+      "target": "/catalog/$1",
+      "destination": "srv",
+      "csrfProtection": true
+    }
+  ]
 }

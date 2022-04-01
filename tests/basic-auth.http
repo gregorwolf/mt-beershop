@@ -25,5 +25,21 @@ GET {{$dotenv api_url}}/catalog/Beers
 Authorization: Bearer {{access_token}}
 
 ### Send request via Approuter
-GET {{$dotenv api_url_ui}}/mtbeershopstatic/catalog/Beers
+###
+GET {{$dotenv api_url_ui}}/user-api/currentUser
 x-approuter-authorization: Bearer {{access_token}}
+###
+GET {{$dotenv api_url_ui}}/user-api/attributes
+x-approuter-authorization: Bearer {{access_token}}
+### 
+GET {{$dotenv api_url_ui}}/catalog/Beers
+x-approuter-authorization: Bearer {{access_token}}
+### 
+GET {{$dotenv api_url_ui}}/extension
+### 
+GET {{$dotenv api_url_ui}}/extension
+Authorization: Basic {{$dotenv api_username}}:{{$dotenv api_password}}
+### 
+GET {{$dotenv api_url_ui}}/basic-auth/catalog/Beers
+Authorization: Basic {{$dotenv api_username}}:{{$dotenv api_password}}
+x-test: Bearer {{access_token}}

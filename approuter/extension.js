@@ -13,17 +13,6 @@ const { xsuaa } = xsenv.getServices({
 
 const jwtCache = {};
 
-const destination = {
-  url: "https://mt-backend",
-  authentication: "OAuth2Password",
-  clientId: xsuaa.clientid,
-  clientSecret: xsuaa.clientsecret,
-  type: "HTTP",
-  queryParameters: {
-    login_hint: '{"origin":"sap.custom"}',
-  },
-};
-
 function getBasicAuthCredentials(req) {
   const [method, base64Credentials] = req.headers.authorization.split(" ");
   if (method !== "Basic") {
@@ -39,36 +28,39 @@ function getBasicAuthCredentials(req) {
 
 async function getJWT(req, credentials) {
   let jwt = "";
-  // Add dynamic parts to destination
-  if (!process.env.TENANT_HOST_PATTERN) {
-    throw Error("TENANT_HOST_PATTERN is not defined");
+  // For single tenant apps we use the xsuaa URL
+  let authURL = xsuaa.url;
+  let loginHint = '{"origin":"sap.custom"}';
+  if (process.env.LOGIN_HINT_ORIGIN) {
+    loginHint = `{"origin":"${process.env.LOGIN_HINT_ORIGIN}"}`;
   }
-  var re = new RegExp(process.env.TENANT_HOST_PATTERN);
-  const tenant = re.exec(req.headers.host);
-  if (!tenant[1]) {
-    throw Error("no matching tenant found");
+  if (process.env.TENANT_HOST_PATTERN) {
+    // for multitenant apps let's get the tenant domain
+    var re = new RegExp(process.env.TENANT_HOST_PATTERN);
+    const tenant = re.exec(req.headers.host);
+    if (!tenant[1]) {
+      throw Error("no matching tenant found");
+    }
+    authURL = `https://${tenant[1]}.${xsuaa.uaadomain}/oauth/token`;
   }
-  destination.tokenServiceUrl = `https://${tenant[1]}.${xsuaa.uaadomain}/oauth/token`;
-  destination.name = credentials.username;
-  destination.username = credentials.username;
-  destination.password = credentials.password;
+
   const auth = {
-    username: destination.clientId,
-    password: destination.clientSecret,
+    username: xsuaa.clientid,
+    password: xsuaa.clientsecret,
   };
   const parameters = {
     grant_type: "password",
-    username: destination.username,
-    password: destination.password,
-    client_id: destination.clientId,
+    username: credentials.username,
+    password: credentials.password,
+    client_id: xsuaa.clientid,
     response_type: "token",
-    login_hint: destination.queryParameters.login_hint,
+    login_hint: loginHint,
   };
   let response;
   try {
     response = await axios({
       method: "POST",
-      url: destination.tokenServiceUrl,
+      url: authURL,
       auth: auth,
       headers: {
         "content-type": "application/x-www-form-urlencoded",

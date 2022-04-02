@@ -5,6 +5,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "approuter",
+      "cwd": "${workspaceFolder}/approuter",
+      "program": "approuter.js",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "env": { "TENANT_HOST_PATTERN": "^(.*)-mt-beershop-ui.localhost" },
+      "type": "node"
+    },
+    {
       "command": "cds run",
       "name": "cds run",
       "request": "launch",

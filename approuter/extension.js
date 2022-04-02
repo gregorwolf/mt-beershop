@@ -2,6 +2,7 @@ const axios = require("axios");
 const crypto = require("crypto");
 const qs = require("qs");
 const xsenv = require("@sap/xsenv");
+const { verifyJwt } = require("@sap-cloud-sdk/core");
 
 xsenv.loadEnv();
 const { xsuaa } = xsenv.getServices({
@@ -80,33 +81,51 @@ async function getJWT(req, credentials) {
   return response.data.access_token;
 }
 
+async function setApprouterAuthorization(req, credentials, next) {
+  // read JWT from cache
+  let jwt;
+  let cachedJwt = jwtCache[credentials.hash];
+  if (cachedJwt) {
+    const verifiedJwt = await verifyJwt(cachedJwt.jwt);
+    if (!verifiedJwt) {
+      throw Error("JWT could not be verified");
+    }
+    // Check if cache is still valid
+    const now = Math.round(new Date().getTime() / 1000);
+    if (verifiedJwt.exp >= now) {
+      jwt = cachedJwt.jwt;
+    } else {
+      jwt = false;
+    }
+  }
+  if (jwt) {
+    req.headers["x-approuter-authorization"] = `Bearer ${jwt}`;
+    next();
+  } else {
+    // Get JWT
+    jwt = await getJWT(req, credentials);
+    // Set x-approuter-authorization header
+    if (jwt) {
+      // Cache JWT
+      jwtCache[credentials.hash] = {
+        jwt,
+        created: new Date().getTime(),
+      };
+      req.headers["x-approuter-authorization"] = `Bearer ${jwt}`;
+    }
+    next();
+  }
+}
+
 module.exports = {
   insertMiddleware: {
     first: [
       function logRequest(req, res, next) {
-        console.log("### DEBUG ### Got request %s %s", req.method, req.url);
+        // console.log("### DEBUG ### Got request %s %s", req.method, req.url);
         if (req.headers.authorization) {
           // Check if Basic Authorization is provided
           const credentials = getBasicAuthCredentials(req);
-          // console.log(credentials);
-          // read JWT from cache
-          if (jwtCache[credentials.hash]) {
-            req.headers["x-approuter-authorization"] = `Bearer ${
-              jwtCache[credentials.hash]
-            }`;
-            next();
-          } else {
-            // Get JWT
-            getJWT(req, credentials).then((jwt) => {
-              // Set x-approuter-authorization header
-              if (jwt) {
-                // Cache JWT
-                jwtCache[credentials.hash] = jwt;
-                req.headers["x-approuter-authorization"] = `Bearer ${jwt}`;
-              }
-              next();
-            });
-          }
+          setApprouterAuthorization(req, credentials, next).then(() => {});
         } else {
           next();
         }

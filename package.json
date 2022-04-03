@@ -29,10 +29,10 @@
     "start": "cds run",
     "watch": "cds build && cds watch",
     "build": "mbt build",
-    "deploy": "cf deploy mta_archives/mt-beershop_1.0.1.mtar",
-    "deploy:srv": "cf deploy mta_archives/mt-beershop_1.0.1.mtar -m mt-beershop-srv",
-    "deploy:html5": "cf deploy mta_archives/mt-beershop_1.0.1.mtar -m mt-beershop-html5-deployer",
-    "deploy:ui": "cf deploy mta_archives/mt-beershop_1.0.1.mtar -m mt-beershop-ui",
+    "deploy": "cf deploy mta_archives/mt-beershop_1.0.1.mtar --retries 0",
+    "deploy:srv": "cf deploy mta_archives/mt-beershop_1.0.1.mtar -m mt-beershop-srv --retries 0",
+    "deploy:html5": "cf deploy mta_archives/mt-beershop_1.0.1.mtar -m mt-beershop-html5-deployer --retries 0",
+    "deploy:ui": "cf deploy mta_archives/mt-beershop_1.0.1.mtar -m mt-beershop-ui --retries 0",
     "undeploy": "cf undeploy mt-beershop --delete-service-keys --delete-services --delete-service-brokers"
   },
   "eslintConfig": {

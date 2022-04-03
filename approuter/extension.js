@@ -126,7 +126,11 @@ module.exports = {
   insertMiddleware: {
     first: [
       function logRequest(req, res, next) {
-        // console.log("### DEBUG ### Got request %s %s", req.method, req.url);
+        // Client has provided a JWT in this special header
+        // https://github.com/gregorwolf/SAP-NPM-API-collection/tree/main/apis/approuter#service-to-application-router
+        if (req.headers["x-approuter-authorization"]) {
+          next();
+        }
         if (req.headers.authorization) {
           // Check if Basic Authorization is provided
           const credentials = getBasicAuthCredentials(req);

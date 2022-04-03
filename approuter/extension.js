@@ -3,7 +3,6 @@ const crypto = require("crypto");
 const qs = require("qs");
 const xsenv = require("@sap/xsenv");
 const { verifyJwt } = require("@sap-cloud-sdk/core");
-const { isArray } = require("@sap/hdi-deploy/lib/utils");
 
 xsenv.loadEnv();
 const { xsuaa } = xsenv.getServices({
@@ -16,7 +15,7 @@ function getTenant(req) {
     // for multitenant apps let's get the tenant domain
     var re = new RegExp(process.env.TENANT_HOST_PATTERN);
     const tenant = re.exec(req.headers.host);
-    if (!isArray(tenant)) {
+    if (!Array.isArray(tenant)) {
       throw Error("no matching tenant found");
     }
     return tenant[1];

@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "",
   "dependencies": {
-    "@gregorwolf/approuter-basicauth2jwt": "^0.1.2",
+    "@cswbtp/approuter-basicauth2jwt": "^0.1.2",
     "@sap/approuter": "^10.14.2"
   },
   "engines": {

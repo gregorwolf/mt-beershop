@@ -125,7 +125,7 @@ async function setApprouterAuthorization(req, credentials, next) {
 module.exports = {
   insertMiddleware: {
     first: [
-      function logRequest(req, res, next) {
+      function setJWTfromBasicAuth(req, res, next) {
         // Client has provided a JWT in this special header
         // https://github.com/gregorwolf/SAP-NPM-API-collection/tree/main/apis/approuter#service-to-application-router
         if (req.headers["x-approuter-authorization"]) {
@@ -138,25 +138,6 @@ module.exports = {
         } else {
           next();
         }
-      },
-    ],
-    beforeRequestHandler: [
-      {
-        path: "/extension",
-        handler: function myMiddleware(req, res, next) {
-          if (!req.headers.authorization) {
-            res.setHeader(
-              "WWW-Authenticate",
-              'Basic realm="Approuter Basic Auth", charset="UTF-8"'
-            );
-            res.statusCode = 401;
-            res.end("Unauthorized");
-            console.log("### DEBUG ### No authorization header provided");
-            return;
-          }
-          console.log(req.headers.authorization);
-          res.end("### DEBUG ### Request handled by basic-auth extension");
-        },
       },
     ],
   },

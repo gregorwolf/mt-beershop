@@ -35,5 +35,8 @@ x-approuter-authorization: Bearer {{access_token}}
 GET {{$dotenv api_url_ui}}/catalog/Beers
 x-approuter-authorization: Bearer {{access_token}}
 ### 
-GET {{$dotenv api_url_ui}}/catalog/Beers
+GET {{$dotenv api_url_ui}}/catalog/Beers?$count=true
+Authorization: Basic {{$dotenv api_username}}:{{$dotenv api_password}}
+### 
+GET {{$dotenv api_url_ui_tenant2}}/catalog/Beers?$count=true
 Authorization: Basic {{$dotenv api_username}}:{{$dotenv api_password}}

@@ -3,13 +3,27 @@ const crypto = require("crypto");
 const qs = require("qs");
 const xsenv = require("@sap/xsenv");
 const { verifyJwt } = require("@sap-cloud-sdk/core");
+const { isArray } = require("@sap/hdi-deploy/lib/utils");
 
 xsenv.loadEnv();
 const { xsuaa } = xsenv.getServices({
   xsuaa: { tags: "xsuaa" },
 });
-
 // console.log("XSUAA:", xsuaa);
+
+function getTenant(req) {
+  if (process.env.TENANT_HOST_PATTERN) {
+    // for multitenant apps let's get the tenant domain
+    var re = new RegExp(process.env.TENANT_HOST_PATTERN);
+    const tenant = re.exec(req.headers.host);
+    if (!isArray(tenant)) {
+      throw Error("no matching tenant found");
+    }
+    return tenant[1];
+  } else {
+    return false;
+  }
+}
 
 const jwtCache = {};
 
@@ -22,7 +36,12 @@ function getBasicAuthCredentials(req) {
     "ascii"
   );
   const [username, password] = credentials.split(":");
-  const hash = crypto.createHash("sha256").update(credentials).digest("base64");
+
+  let hash = crypto.createHash("sha256").update(credentials).digest("base64");
+  const tenant = getTenant(req);
+  if (tenant) {
+    hash = tenant + "-" + hash;
+  }
   return { username, password, hash };
 }
 
@@ -35,13 +54,8 @@ async function getJWT(req, credentials) {
     loginHint = `{"origin":"${process.env.LOGIN_HINT_ORIGIN}"}`;
   }
   if (process.env.TENANT_HOST_PATTERN) {
-    // for multitenant apps let's get the tenant domain
-    var re = new RegExp(process.env.TENANT_HOST_PATTERN);
-    const tenant = re.exec(req.headers.host);
-    if (!tenant[1]) {
-      throw Error("no matching tenant found");
-    }
-    authURL = `https://${tenant[1]}.${xsuaa.uaadomain}/oauth/token`;
+    let tenant = getTenant(req);
+    authURL = `https://${tenant}.${xsuaa.uaadomain}/oauth/token`;
   }
 
   const auth = {

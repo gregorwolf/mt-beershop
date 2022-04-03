@@ -15,12 +15,6 @@
       "service": "sap-approuter-userapi"
     },
     {
-      "source": "/basic-auth/(.*)$",
-      "target": "/$1",
-      "destination": "srv",
-      "authenticationType": "none"
-    },
-    {
       "source": "/catalog/(.*)$",
       "target": "/catalog/$1",
       "destination": "srv",

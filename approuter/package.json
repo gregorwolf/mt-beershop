@@ -9,8 +9,8 @@
     "node": "^14"
   },
   "scripts": {
-    "start": "node approuter.js",
-    "start:standard": "node node_modules/@sap/approuter/approuter.js",
+    "start:extended": "node approuter.js",
+    "start": "node node_modules/@sap/approuter/approuter.js",
     "update": "npm update"
   }
 }

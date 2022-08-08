@@ -42,6 +42,7 @@ modules:
           }
         ]
     requires:
+    - name: mt-beershop-logging
     - name: mt-beershop-html5-rt
     - name: mt-beershop-uaa-mt
     # The bindings destination and connectivity results in the issue:
@@ -131,6 +132,7 @@ modules:
       builder: npm-ci
       ignore: ["node_modules/"]
     requires:
+    - name: mt-beershop-logging
     # Resources extracted from CAP configuration
     - name: mt-beershop-db-mt
     - name: mt-beershop-uaa-mt
@@ -216,3 +218,9 @@ resources:
             getDependencies: ~{mtx-api/mtx-url}/mtx/v1/provisioning/dependencies
             onSubscriptionAsync: false
             onUnSubscriptionAsync: false
+
+  - name: mt-beershop-logging
+    type: org.cloudfoundry.managed-service
+    parameters:
+       service: application-logs
+       service-plan: lite

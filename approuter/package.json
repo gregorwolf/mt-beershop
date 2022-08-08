@@ -3,14 +3,14 @@
   "version": "0.0.2",
   "description": "",
   "dependencies": {
-    "@cswbtp/approuter-basicauth2jwt": "^0.1.2",
-    "@sap/approuter": "^10.14.2"
+    "@sap/approuter": "^11.3.2"
   },
   "engines": {
     "node": "^14"
   },
   "scripts": {
     "start": "node approuter.js",
-    "start:standard": "node node_modules/@sap/approuter/approuter.js"
+    "start:standard": "node node_modules/@sap/approuter/approuter.js",
+    "update": "npm update"
   }
 }

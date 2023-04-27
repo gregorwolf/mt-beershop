@@ -32,71 +32,73 @@ cds.on("mtx", async () => {
 
     provisioning.on("UPDATE", "tenant", async (req, next) => {
       await next(); // default implementation creating HDI container
-      let tenantHost =
-        req.req.body.subscribedSubdomain +
-        // Don't add space
-        // "-" +
-        // appEnv.app.space_name.toLowerCase().replace(/_/g, "-") +
-        "-" +
-        services.registry.appName.toLowerCase().replace(/_/g, "-") +
-        "-ui";
-      let domain = /\.(.*)/gm.exec(appEnv.app.application_uris[0])[1];
-      let tenantURL = "https://" + tenantHost + "." + domain;
-      console.log("Created Tenant URL: ", tenantURL);
-      // Read CF Organizations via Cloud SDK
-      try {
-        console.log("Read CF Organizations via Cloud SDK");
-        const cfOrgs = await getOrganizations(req);
-        console.log("Cloud Foundry Organizations", cfOrgs.resources);
-      } catch (error) {
-        console.log(error.message);
-      }
-      // Fails with:
-      // Could not fetch client credentials token for service of type "destination"
-      if (process.env.CREATE_ROUTE && process.env.CREATE_ROUTE === "CAP") {
-        const cfapi = await cds.connect.to("cfapi");
-        const uiappGuid = (
-          await cfapi.get(
-            `/v3/apps` +
-              `?organization_guids=${appEnv.app.organization_id}` +
-              `&space_guids=${appEnv.app.space_id}` +
-              `&names=mt-beershop-ui`
-          )
-        ).resources[0].guid;
-        const domainGuid = (await cfapi.get(`/v3/domains?names=${domain}`))
-          .resources[0].guid;
-        console.log("UI App GUID: ", uiappGuid);
-        const createRoute = await cfapi.post("/v3/routes", {
-          host: tenantHost,
-          relationships: {
-            space: {
-              data: {
-                guid: appEnv.app.space_id,
-              },
-            },
-            domain: {
-              data: {
-                guid: domainGuid,
-              },
-            },
-          },
-        });
-        const mapRouteToApp = await cfapi.post(
-          `/v3/routes/${createRoute.guid}/destinations`,
-          {
-            destinations: [
-              {
-                app: {
-                  guid: uiappGuid,
+      if (req.req !== undefined) {
+        let tenantHost =
+          req.req.body.subscribedSubdomain +
+          // Don't add space
+          // "-" +
+          // appEnv.app.space_name.toLowerCase().replace(/_/g, "-") +
+          "-" +
+          services.registry.appName.toLowerCase().replace(/_/g, "-") +
+          "-ui";
+        let domain = /\.(.*)/gm.exec(appEnv.app.application_uris[0])[1];
+        let tenantURL = "https://" + tenantHost + "." + domain;
+        console.log("Created Tenant URL: ", tenantURL);
+        // Read CF Organizations via Cloud SDK
+        try {
+          console.log("Read CF Organizations via Cloud SDK");
+          const cfOrgs = await getOrganizations(req);
+          console.log("Cloud Foundry Organizations", cfOrgs.resources);
+        } catch (error) {
+          console.log(error.message);
+        }
+        // Fails with:
+        // Could not fetch client credentials token for service of type "destination"
+        if (process.env.CREATE_ROUTE && process.env.CREATE_ROUTE === "CAP") {
+          const cfapi = await cds.connect.to("cfapi");
+          const uiappGuid = (
+            await cfapi.get(
+              `/v3/apps` +
+                `?organization_guids=${appEnv.app.organization_id}` +
+                `&space_guids=${appEnv.app.space_id}` +
+                `&names=mt-beershop-ui`
+            )
+          ).resources[0].guid;
+          const domainGuid = (await cfapi.get(`/v3/domains?names=${domain}`))
+            .resources[0].guid;
+          console.log("UI App GUID: ", uiappGuid);
+          const createRoute = await cfapi.post("/v3/routes", {
+            host: tenantHost,
+            relationships: {
+              space: {
+                data: {
+                  guid: appEnv.app.space_id,
                 },
               },
-            ],
-          }
-        );
-      } else {
-        await createRoute(appEnv, tenantHost, domain);
+              domain: {
+                data: {
+                  guid: domainGuid,
+                },
+              },
+            },
+          });
+          const mapRouteToApp = await cfapi.post(
+            `/v3/routes/${createRoute.guid}/destinations`,
+            {
+              destinations: [
+                {
+                  app: {
+                    guid: uiappGuid,
+                  },
+                },
+              ],
+            }
+          );
+        } else {
+          await createRoute(appEnv, tenantHost, domain);
+        }
+        return tenantURL;
       }
-      return tenantURL;
     });
   });
 });

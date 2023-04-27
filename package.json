@@ -72,9 +72,9 @@
         "users": {
           "admin": {
             "roles": [
-              "$XSAPPNAME.mtcallback",
-              "$XSAPPNAME.mtdeployment",
-              "$XSAPPNAME.MtxDiagnose"
+              "mtcallback",
+              "mtdeployment",
+              "MtxDiagnose"
             ],
             "tenant": "anonymous"
           }

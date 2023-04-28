@@ -1,4 +1,5 @@
 const cds = require("@sap/cds");
+const LOG = cds.log("custom-mtx");
 const proxy = require("@sap/cds-odata-v2-adapter-proxy");
 const { getOrganizations, createRoute } = require("./cf-api");
 const cfenv = require("cfenv");
@@ -20,17 +21,26 @@ cds.env.mtx.dependencies = [services.dest.xsappname, services.conn.xsappname];
 cds.env.odata.protectMetadata = false;
 
 cds.on("mtx", async () => {
-  console.log("on mtx reached");
+  LOG.info("on mtx reached");
   const provisioning = await cds.connect.to("ProvisioningService");
 
   provisioning.prepend(() => {
-    console.log("prepend event handlers for ProvisioningService");
+    LOG.info("prepend event handlers for ProvisioningService");
 
-    provisioning.on("DELETE", "tenant", async (req) => {
-      console.log("Custom tenant DELETE handler - path: ", req.path);
+    provisioning.on("DELETE", "tenant", async (req, next) => {
+      LOG.info("Custom tenant DELETE handler - path: ", req.path);
+      await next(); // default implementation deleting HDI container
+      LOG.info("Successfully deleted tenant");
     });
 
     provisioning.on("UPDATE", "tenant", async (req, next) => {
+      process.env.SERVICE_REPLACEMENTS = {
+        key: "ServiceName_1",
+        name: "cross-container-service-1",
+        service: req.data.subscribedSubdomain + "_CS1HDIAdb",
+      };
+      LOG.debug("SERVICE_REPLACEMENTS", process.env.SERVICE_REPLACEMENTS);
+
       await next(); // default implementation creating HDI container
       if (req.req !== undefined) {
         let tenantHost =
@@ -43,14 +53,14 @@ cds.on("mtx", async () => {
           "-ui";
         let domain = /\.(.*)/gm.exec(appEnv.app.application_uris[0])[1];
         let tenantURL = "https://" + tenantHost + "." + domain;
-        console.log("Created Tenant URL: ", tenantURL);
+        LOG.info("Created Tenant URL: ", tenantURL);
         // Read CF Organizations via Cloud SDK
         try {
-          console.log("Read CF Organizations via Cloud SDK");
+          LOG.info("Read CF Organizations via Cloud SDK");
           const cfOrgs = await getOrganizations(req);
-          console.log("Cloud Foundry Organizations", cfOrgs.resources);
+          LOG.info("Cloud Foundry Organizations", cfOrgs.resources);
         } catch (error) {
-          console.log(error.message);
+          LOG.info(error.message);
         }
         // Fails with:
         // Could not fetch client credentials token for service of type "destination"
@@ -66,7 +76,7 @@ cds.on("mtx", async () => {
           ).resources[0].guid;
           const domainGuid = (await cfapi.get(`/v3/domains?names=${domain}`))
             .resources[0].guid;
-          console.log("UI App GUID: ", uiappGuid);
+          LOG.info("UI App GUID: ", uiappGuid);
           const createRoute = await cfapi.post("/v3/routes", {
             host: tenantHost,
             relationships: {

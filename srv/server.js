@@ -34,11 +34,13 @@ cds.on("mtx", async () => {
     });
 
     provisioning.on("UPDATE", "tenant", async (req, next) => {
-      process.env.SERVICE_REPLACEMENTS = {
-        key: "ServiceName_1",
-        name: "cross-container-service-1",
-        service: req.data.subscribedSubdomain + "_CS1HDIAdb",
-      };
+      process.env.SERVICE_REPLACEMENTS = JSON.stringify([
+        {
+          key: "ServiceName_1",
+          name: "cross-container-service-1",
+          service: req.data.subscribedSubdomain + "_CS1HDIAdb",
+        },
+      ]);
       LOG.debug("SERVICE_REPLACEMENTS", process.env.SERVICE_REPLACEMENTS);
 
       await next(); // default implementation creating HDI container

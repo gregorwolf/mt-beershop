@@ -1,4 +1,10 @@
 ###
+GET {{$dotenv localhost}}/catalog/
+Authorization: Basic admin:
+###
+GET {{$dotenv localhost}}/catalog/CS1TAB
+Authorization: Basic admin:
+###
 GET {{$dotenv localhost}}/catalog/Beers
     ?$count=true
     &$filter=(IsActiveEntity%20eq%20false%20or%20SiblingEntity/IsActiveEntity%20eq%20null)

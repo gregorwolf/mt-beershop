@@ -34,6 +34,12 @@ cds.on("mtx", async () => {
     });
 
     provisioning.on("UPDATE", "tenant", async (req, next) => {
+      const vcap = JSON.parse(process.env.VCAP_SERVICES);
+      // TODO:
+      // Use Cloud Foundry API to read details of UPS
+      // Check if UPS is existing in vcap
+      // If not, add it to vcap
+      // set env variable VCAP_SERVICES
       process.env.SERVICE_REPLACEMENTS = JSON.stringify([
         {
           key: "ServiceName_1",

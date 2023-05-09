@@ -34,17 +34,46 @@ cds.on("mtx", async () => {
     });
 
     provisioning.on("UPDATE", "tenant", async (req, next) => {
+      const cfapi = await cds.connect.to("cfapi");
       const vcap = JSON.parse(process.env.VCAP_SERVICES);
-      // TODO:
-      // Use Cloud Foundry API to read details of UPS
+      const upsName = req.data.subscribedSubdomain + "_CS1HDIAdb";
       // Check if UPS is existing in vcap
-      // If not, add it to vcap
-      // set env variable VCAP_SERVICES
+      let upsContent = vcap["user-provided"]?.filter((ups) => {
+        ups.name === upsName;
+      });
+      if (upsContent === undefined || upsContent.length === 0) {
+        // Use Cloud Foundry API to read details of UPS
+        const upsGetResult = await cfapi.get(
+          `/v3/service_instances?type=user-provided&names=${upsName}`
+        );
+        upsGuid = upsGetResult.resources[0].guid;
+        upsCredentials = await cfapi.get(
+          `/v3/service_instances/${upsGuid}/credentials`
+        );
+        upsContent = {
+          label: "user-provided",
+          name: upsName,
+          tags: ["hana"],
+          instance_guid: upsGuid,
+          instance_name: upsName,
+          binding_name: null,
+          credentials: upsCredentials,
+          syslog_drain_url: null,
+          volume_mounts: [],
+        };
+        if (vcap["user-provided"] === undefined) {
+          vcap["user-provided"] = [];
+        }
+        // add it to vcap
+        vcap["user-provided"].push(upsContent);
+        // set env variable VCAP_SERVICES
+        process.env.VCAP_SERVICES = JSON.stringify(vcap);
+      }
       process.env.SERVICE_REPLACEMENTS = JSON.stringify([
         {
           key: "ServiceName_1",
           name: "cross-container-service-1",
-          service: req.data.subscribedSubdomain + "_CS1HDIAdb",
+          service: upsName,
         },
       ]);
       LOG.debug("SERVICE_REPLACEMENTS", process.env.SERVICE_REPLACEMENTS);
@@ -73,7 +102,6 @@ cds.on("mtx", async () => {
         // Fails with:
         // Could not fetch client credentials token for service of type "destination"
         if (process.env.CREATE_ROUTE && process.env.CREATE_ROUTE === "CAP") {
-          const cfapi = await cds.connect.to("cfapi");
           const uiappGuid = (
             await cfapi.get(
               `/v3/apps` +

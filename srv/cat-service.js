@@ -1,10 +1,10 @@
 const cds = require("@sap/cds");
 const {
-  executeHttpRequest,
   getDestinationFromDestinationService,
   retrieveJwt,
-  verifyJwt,
-} = require("@sap-cloud-sdk/core");
+  decodeJwt: verifyJwt,
+} = require("@sap-cloud-sdk/connectivity");
+const { executeHttpRequest } = require("@sap-cloud-sdk/http-client");
 const { getDestinationNameAndJwt } = require("./lib/connection-helper");
 const { getOrganizations } = require("./cf-api");
 const s4hanaDestinationName = "S4HANA";

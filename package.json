@@ -9,7 +9,7 @@
     "node": "^18"
   },
   "dependencies": {
-    "@sap-cloud-sdk/core": "^1.54.2",
+    "@sap-cloud-sdk/connectivity": "^3",
     "@sap-cloud-sdk/http-client": "^3",
     "@sap/cds": "^6",
     "@sap/cds-mtx": "^2.6.4",

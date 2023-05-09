@@ -1,8 +1,8 @@
 const { getDestinationNameAndJwt } = require("./lib/connection-helper");
 const {
-  executeHttpRequest,
   getDestinationFromDestinationService,
-} = require("@sap-cloud-sdk/core");
+} = require("@sap-cloud-sdk/connectivity");
+const { executeHttpRequest } = require("@sap-cloud-sdk/http-client");
 
 const destinationName = process.env.CFAPI_DESTINATION || "CFAPI";
 const options = {

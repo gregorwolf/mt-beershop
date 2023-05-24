@@ -23,6 +23,23 @@ cds.env.odata.protectMetadata = false;
 cds.on("mtx", async () => {
   LOG.info("on mtx reached");
   const provisioning = await cds.connect.to("ProvisioningService");
+  const model = await cds.connect.to("ModelService");
+
+  model.prepend(() => {
+    LOG.info("prepend event handlers for ModelService");
+
+    model.on("upgradeTenant", async (req, next) => {
+      await next(); // call the upgrade
+      LOG.info("Successfully upgraded tenant");
+      /*
+    const {
+      instanceData, // HDI container metadata
+      deploymentOptions, // additional deployment options, e.g. `autoUndeploy`
+    } = cds.context.req.body;
+    */
+      // custom code
+    });
+  });
 
   provisioning.prepend(() => {
     LOG.info("prepend event handlers for ProvisioningService");
@@ -43,6 +60,8 @@ cds.on("mtx", async () => {
       });
       if (upsContent === undefined || upsContent.length === 0) {
         // Use Cloud Foundry API to read details of UPS
+        // Local Test with CF CLI:
+        // cf curl "v3/service_instances?type=user-provided&names=anonymous_CS1HDIAdb"
         const upsGetResult = await cfapi.get(
           `/v3/service_instances?type=user-provided&names=${upsName}`
         );

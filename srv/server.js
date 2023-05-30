@@ -25,23 +25,26 @@ cds.on("mtx", async () => {
   const provisioning = await cds.connect.to("ProvisioningService");
   const model = await cds.connect.to("ModelService");
 
-  model.prepend(() => {
+  await model.prepend(() => {
     LOG.info("prepend event handlers for ModelService");
 
-    model.on("upgradeTenant", async (req, next) => {
-      await next(); // call the upgrade
-      LOG.info("Successfully upgraded tenant");
-      /*
-    const {
-      instanceData, // HDI container metadata
-      deploymentOptions, // additional deployment options, e.g. `autoUndeploy`
-    } = cds.context.req.body;
-    */
-      // custom code
+    model.on("asyncUpgrade", async (req, next) => {
+      const { autoUndeploy, tenants } = cds.context.req.body;
+      console.log(
+        "UpgradeTenant: ",
+        req.data.subscribedTenantId,
+        req.data.subscribedSubdomain,
+        instanceData,
+        deploymentOptions
+      );
+      // TODO:
+      // Implement upgrade logic that fills SERVICE_REPLACEMENTS env variable
+      // like it is done in the tenant subscription handler
+      await next();
     });
   });
 
-  provisioning.prepend(() => {
+  await provisioning.prepend(() => {
     LOG.info("prepend event handlers for ProvisioningService");
 
     provisioning.on("DELETE", "tenant", async (req, next) => {

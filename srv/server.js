@@ -30,13 +30,7 @@ cds.on("mtx", async () => {
 
     model.on("asyncUpgrade", async (req, next) => {
       const { autoUndeploy, tenants } = cds.context.req.body;
-      console.log(
-        "UpgradeTenant: ",
-        req.data.subscribedTenantId,
-        req.data.subscribedSubdomain,
-        instanceData,
-        deploymentOptions
-      );
+      console.log("asyncUpgrade: ", autoUndeploy, tenants);
       // TODO:
       // Implement upgrade logic that fills SERVICE_REPLACEMENTS env variable
       // like it is done in the tenant subscription handler

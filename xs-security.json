@@ -3,12 +3,8 @@
   "tenant-mode": "shared",
   "scopes": [
     {
-      "name": "$XSAPPNAME.ExtendCDS",
+      "name": "$XSAPPNAME.cds.ExtensionDeveloper",
       "description": "Extend CDS application"
-    },
-    {
-      "name": "$XSAPPNAME.ExtendCDSdelete",
-      "description": "Extend CDS application with undeploy"
     },
     {
       "name": "$XSAPPNAME.MtxDiagnose",

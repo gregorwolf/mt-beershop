@@ -20,33 +20,11 @@ const services = xsenv.getServices({
 cds.env.mtx.dependencies = [services.dest.xsappname, services.conn.xsappname];
 cds.env.odata.protectMetadata = false;
 
-cds.on("mtx", async () => {
-  LOG.info("on mtx reached");
-  const provisioning = await cds.connect.to("ProvisioningService");
-  const model = await cds.connect.to("ModelService");
-
-  await model.prepend(() => {
-    LOG.info("prepend event handlers for ModelService");
-
-    model.on("asyncUpgrade", async (req, next) => {
-      const { autoUndeploy, tenants } = cds.context.req.body;
-      console.log("asyncUpgrade: ", autoUndeploy, tenants);
-      // TODO:
-      // Implement upgrade logic that fills SERVICE_REPLACEMENTS env variable
-      // like it is done in the tenant subscription handler
-      await next();
-    });
-  });
+cds.on("served", async () => {
+  const { "cds.xt.SaasProvisioningService": provisioning } = cds.services;
+  const { "cds.xt.DeploymentService": deployment } = cds.services;
 
   await provisioning.prepend(() => {
-    LOG.info("prepend event handlers for ProvisioningService");
-
-    provisioning.on("DELETE", "tenant", async (req, next) => {
-      LOG.info("Custom tenant DELETE handler - path: ", req.path);
-      await next(); // default implementation deleting HDI container
-      LOG.info("Successfully deleted tenant");
-    });
-
     provisioning.on("UPDATE", "tenant", async (req, next) => {
       const cfapi = await cds.connect.to("cfapi");
       const vcap = JSON.parse(process.env.VCAP_SERVICES);
@@ -161,6 +139,20 @@ cds.on("mtx", async () => {
         }
         return tenantURL;
       }
+    });
+  });
+  await deployment.prepend(() => {
+    // previously this was `upgradeTenant`
+    deployment.on("upgrade", async (req, next) => {
+      // HDI container credentials are not yet available here
+      LOG.info("upgrade event handler");
+    });
+    // previously this was `deployToDb`
+    deployment.on("deploy", async (req) => {
+      const {
+        tenant,
+        options: { container },
+      } = req.data;
     });
   });
 });

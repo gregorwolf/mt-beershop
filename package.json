@@ -12,7 +12,7 @@
     "@sap-cloud-sdk/connectivity": "^3",
     "@sap-cloud-sdk/http-client": "^3",
     "@sap/cds": "^6",
-    "@sap/cds-mtx": "^2.6.4",
+    "@sap/cds-mtxs": "^1.8.2",
     "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
     "@sap/hdi-deploy": "^4.6.0",
     "@sap/instance-manager": "^3.5.3",
@@ -101,6 +101,7 @@
         }
       },
       "multitenancy": true,
+      "extensibility": false,
       "cfapi": {
         "kind": "rest",
         "credentials": {
@@ -133,6 +134,15 @@
         "sap."
       ],
       "dependencies": []
+    },
+    "log": {
+      "levels": {
+        "mtx": "info",
+        "custom-mtx": "info"
+      }
+    },
+    "build": {
+      "target": "."
     }
   }
 }

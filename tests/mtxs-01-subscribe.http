@@ -1,0 +1,24 @@
+### Read subscribed tenants
+GET {{$dotenv localhost}}/-/cds/saas-provisioning/tenant/
+Authorization: Basic admin:
+
+###
+GET {{$dotenv localhost}}/-/cds/saas-provisioning/dependencies
+Authorization: Basic admin:
+
+### Create subscription
+PUT {{$dotenv localhost}}/-/cds/saas-provisioning/tenant/{{$dotenv tenant_id}}
+Authorization: Basic admin:
+#Authorization: Bearer {{accToken}}
+Content-Type: application/json
+
+{
+    "subscribedSubdomain": "{{$dotenv tenant_id}}",
+    "eventType": "CREATE"
+}
+
+###
+"Error: Could not get additional deployment resources\n    
+at /Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds-mtxs/srv/model-provider.js:92:37\n    
+at async next (/Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds/lib/srv/srv-dispatch.js:76:17)\n   
+ at async ModelProviderService.handle (/Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds/lib/srv/srv-dispatch.js:74:10)\n    at async resources4 (/Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds-mtxs/srv/plugins/hana.js:116:18)\n    at async /Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds-mtxs/srv/plugins/hana.js:226:7\n    at async Promise.all (index 1)\n    at async _deploy (/Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds-mtxs/srv/plugins/hana.js:214:18)\n    at async next (/Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds/lib/srv/srv-dispatch.js:76:17)\n    at async ApplicationService.handle (/Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds/lib/srv/srv-dispatch.js:74:10)\n    at async SaasProvisioningService.create (/Users/gwolf/Documents/Projects/cap/mt-beershop/node_modules/@sap/cds-mtxs/srv/cf/saas-provisioning-service.js:72:9)"

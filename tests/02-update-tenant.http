@@ -1,3 +1,7 @@
+### 
+GET {{$dotenv localhost}}/mtx/v1/model/
+Authorization: Basic admin:
+
 ### Update Model of one Tenant
 # @name asyncUpgrade
 POST {{$dotenv localhost}}/mtx/v1/model/asyncUpgrade

@@ -11,20 +11,20 @@
   "dependencies": {
     "@sap-cloud-sdk/connectivity": "^3",
     "@sap-cloud-sdk/http-client": "^3",
-    "@sap/cds": "^6",
-    "@sap/cds-mtx": "^2.6.4",
+    "@sap/cds": "^7",
+    "@sap/cds-mtx": "^2",
     "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
-    "@sap/hdi-deploy": "^4.6.0",
-    "@sap/instance-manager": "^3.5.3",
-    "@sap/xsenv": "^3.4.0",
-    "@sap/xssec": "^3.2.17",
+    "@sap/hdi-deploy": "^4",
+    "@sap/instance-manager": "^4",
+    "@sap/xsenv": "^4",
+    "@sap/xssec": "^3",
     "cfenv": "^1",
     "express": "^4.18.2",
     "hdb": "^0",
     "passport": "^0"
   },
   "devDependencies": {
-    "@sap/cds-dk": "^6",
+    "@sap/cds-dk": "^7",
     "mbt": "^1",
     "npm-run-all": "^4.1.5",
     "sqlite3": "^5.1.6"
